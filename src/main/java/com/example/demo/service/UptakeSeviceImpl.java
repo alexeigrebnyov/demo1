@@ -7,8 +7,10 @@ import com.example.demo.model.UptakeReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UptakeSeviceImpl implements UptakeService {
@@ -27,6 +29,11 @@ public class UptakeSeviceImpl implements UptakeService {
     @Override
     public List<UptakeReport> getByDate(Date date) {
         return uptakeDao.getByDate(date);
+    }
+
+    @Override
+    public List<Object[]> getData(String bio_code) throws SQLException {
+        return uptakeDao.getData(bio_code);
     }
 
     @Override

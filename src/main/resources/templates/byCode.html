@@ -10,7 +10,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <link rel="icon" href="spring_leaf_plant_nature_leaves_garden_environment_icon_133309.ico">
-    <meta http-equiv="refresh" content="1">
+<!--    <meta http-equiv="refresh" content="1">-->
     <title>Title</title>
 </head>
 <body>
@@ -49,8 +49,9 @@
 <!--                                </div>-->
                                 <div id="div_refresh">
                                     <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
-                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
-<!--                                         <input type="submit" value="Отправить">&ndash;&gt;-->
+<!--                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">-->
+                                        <input type="text" name="codeInt" id="codeInt" >
+                                         <input type="submit" value="Отправить">-->
                                     </form>
                                 </div>
                             </div>
@@ -68,10 +69,16 @@
                             <th:block th:each = "cont:${selected}">
                                 <tr>
                                     <td th:utext="${cont.emc}"></td>
+                                    <td th:utext="${cont.fio}"></td>
+                                    <td th:utext="${cont.date_bio}"></td>
                                     <td th:utext="${cont.code}"></td>
-                                    <td th:utext="${cont.refer}"></td>
-                                    <td th:utext="${cont.name}"></td>
-                                    <td th:utext="${cont.sex}"></td>
+                                    <td th:utext="${cont.hiv}"></td>
+                                    <td th:utext="${cont.hbsAg}"></td>
+                                    <td th:utext="${cont.atHCV}"></td>
+                                    <td th:utext="${cont.syphIFA}"></td>
+                                    <td th:utext="${cont.syphMRP}"></td>
+                                    <td th:utext="${cont.kontengent}"></td>
+                                    <td th:utext="${cont.label}"></td>
                                     <td>
                                         <button class="btn btn-danger" type="submit">x</button>
                                     </td>

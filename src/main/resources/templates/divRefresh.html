@@ -20,5 +20,15 @@
         <!--                                         <input type="submit" value="Отправить">&ndash;&gt;-->
     </form>
 </div>
+
+<script>
+    // let URL = "divRefresh.html"
+    $(document).ready(function () {
+        $( '#codeForm' ).load("/divRefresh.html");
+        setInterval(function () {
+            $( '#div_refresh' ).load("/divRefresh.html");
+        }, 1000)
+    })
+</script>
 </body>
 </html>
