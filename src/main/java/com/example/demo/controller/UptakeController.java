@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +37,7 @@ public class UptakeController {
 //    BCScaner bcScaner;
     List<Contingent> uptake = new ArrayList<>();
     List<Analysis> uptakeByCode = new ArrayList<>();
+
     String code;
 
     @Autowired
@@ -72,10 +76,11 @@ public class UptakeController {
     public String updateUser1(ModelMap model) {
 
 //    Test.getScan();
-    List<Analysis> dist = uptakeByCode
+        List<Analysis> dist = uptakeByCode
                 .stream()
                 .distinct()
                 .collect(Collectors.toList());
+
 //        if (Test.data != null) {
 //            Scanner scanner = new Scanner(Test.data);
 //            while (scanner.hasNextInt()) {
@@ -97,6 +102,28 @@ public class UptakeController {
     return "divRefresh";
 
     }
+    @PostMapping(value = "/write")
+    public String write() throws IOException {
+        List<Analysis> dist = uptakeByCode
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+        try(FileOutputStream fos=new FileOutputStream("C:/Users/alexei/Downloads/HIVList.txt", true);) {
+            for (Analysis data:
+                    dist) {
+                if (data.getHiv().equals("1")) {
+                    String item = data.getEmc()+ System.lineSeparator();
+                    fos.write(item.getBytes());
+                }
+
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return "redirect:/code";
+
+
+    }
 
     @PostMapping(value = "/code")
     public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
@@ -114,10 +141,10 @@ public class UptakeController {
 
 
         for (Object[] data1 : data) {
-            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
-                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
-                    + "" + data1[10]
-            );
+//            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
+//                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
+//                    + "" + data1[10]
+//            );
             try {
                 analysis.setEmc(data1[0].toString());
                 analysis.setFio(data1[1].toString());

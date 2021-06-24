@@ -49,7 +49,7 @@ public class UptakeDaoImpl implements UptakeDao {
     }
     public  List<Object[]> getData(String bio_code) throws SQLException {
         List<Object[]> objects = new ArrayList<>();
-        Connection connection = database.getDataSource().getConnection();
+        Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT DISTINCT patdirec.PATIENTS_ID,\n" +
                 " dbo.fNNPlus_Patient (pat.PATIENTS_ID,1),\n" +

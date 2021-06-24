@@ -16,6 +16,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -29,6 +31,7 @@ public class Database {
     private String url = data[1];
     private String user = data[2];
     private String password = data[3];
+
 
     private static String[] getDataconfig() {
         String[] data = new String[4];
@@ -53,6 +56,9 @@ public DataSource getDataSource() {
 
 
     return dataSource;
+}
+public Connection getConnection() throws SQLException {
+        return  getDataSource().getConnection();
 }
 
 }
