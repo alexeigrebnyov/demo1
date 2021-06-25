@@ -87,29 +87,6 @@ public class DemoApplication {
 		this.dataInit = dataInit;
 	}
 
-	private static String url = "jdbc:sqlserver://192.168.7.123/medialog?serverTimezone=Europe/Moscow&useSSL=false";
-	private static String username = "sa";
-	private static String password = "medik";
-	private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-
-	public static Connection getConnection() {
-		Connection conn = null;
-		try {
-
-			Class.forName(driver).getDeclaredConstructor().newInstance();
-			conn = DriverManager.getConnection(url, username, password);
-
-			System.out.println("Connection to Store DB succesfull!");
-
-		} catch (Exception ex) {
-			System.out.println("Connection failed...");
-
-
-			System.out.println(ex);
-
-		}
-		return conn;
-	}
 
 
 	private static String[] getPath() {
