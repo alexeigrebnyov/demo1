@@ -96,6 +96,7 @@ public class DemoApplication {
 		paths[1] = pathScanner.next();
 		paths[2] = pathScanner.next();
 		return paths;
+
 	}
 
 
