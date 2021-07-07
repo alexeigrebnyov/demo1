@@ -14,6 +14,6 @@ public interface UptakeDao {
     List<UptakeReport> getAll();
     List<UptakeReport> getByDate (Date date);
     void add(UptakeReport uptakeReport);
-    List<Object[]> getData(String bio_code) throws SQLException;
+    List<Object[]> getData(String done,String bio_code) throws SQLException;
 
 }

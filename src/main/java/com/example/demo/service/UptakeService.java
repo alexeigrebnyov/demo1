@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UptakeService {
     List<UptakeReport> getAll();
     List<UptakeReport> getByDate(Date date);
-    List<Object[]> getData(String bio_code) throws SQLException;
+    List<Object[]> getData(String done, String bio_code) throws SQLException;
     void add(UptakeReport uptakeReport);
 
 

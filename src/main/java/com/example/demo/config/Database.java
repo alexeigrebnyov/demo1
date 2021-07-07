@@ -26,33 +26,33 @@ import java.util.Scanner;
 @PropertySource("classpath:application.properties")
 @ComponentScan(value = "com")
 public class Database {
-    private String[] data = getDataconfig();
-    private String driver =data[0];
-    private String url = data[1];
-    private String user = data[2];
-    private String password = data[3];
+//    private String[] data = getDataconfig();
+//    private String driver =data[0];
+//    private String url = data[1];
+//    private String user = data[2];
+//    private String password = data[3];
 
 
-    private static String[] getDataconfig() {
-        String[] data = new String[4];
-        System.out.println("Укажите параметры подключения");
-        Scanner pathScanner = new Scanner(System.in);
-        int i;
-        for (i = 0; i < data.length; i++) {
-            data[i] = pathScanner.next();
-        }
-        return data;
-    }
+//    private static String[] getDataconfig() {
+//        String[] data = new String[4];
+//        System.out.println("Укажите параметры подключения");
+//        Scanner pathScanner = new Scanner(System.in);
+//        int i;
+//        for (i = 0; i < data.length; i++) {
+//            data[i] = pathScanner.next();
+//        }
+//        return data;
+//    }
 
 
 
 @Bean
 public DataSource getDataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName(driver);
-    dataSource.setUrl(url);
-    dataSource.setUsername(user);
-    dataSource.setPassword(password);
+    dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    dataSource.setUrl("jdbc:sqlserver://192.168.7.100;database=izhevsk");
+    dataSource.setUsername("sa");
+    dataSource.setPassword("medik17@");
 
 
     return dataSource;

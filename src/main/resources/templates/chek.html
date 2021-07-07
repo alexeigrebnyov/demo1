@@ -47,19 +47,16 @@
 <!--&lt;!&ndash;                                        <input type="submit" value="Сканировать">&ndash;&gt;-->
 <!--                                    </form>-->
 <!--                                </div>-->
-                                <div id="div_refresh">
-                                    <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
-<!--                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">-->
-                                        <input type="text" name="codeInt" id="codeInt" >
-                                         <input type="submit" value="Отправить">
-                                    </form>
-                                    <form name="writeForm" id="writeForm" th:action="@{/write}" method="post">
-                                        <input type="submit" value="Завершить">
-                                    </form>
-                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">
-                                        <input type="submit" value="Проверить">
-                                    </form>
-                                </div>
+<!--                                <div id="div_refresh">-->
+<!--                                    <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">-->
+<!--&lt;!&ndash;                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">&ndash;&gt;-->
+<!--                                        <input type="text" name="codeInt" id="codeInt" >-->
+<!--                                         <input type="submit" value="Отправить">-->
+<!--                                    </form>-->
+<!--                                    <form name="writeForm" id="writeForm" th:action="@{/write}" method="post">-->
+<!--                                        <input type="submit" value="Завершить">-->
+<!--                                    </form>-->
+<!--                                </div>-->
                             </div>
                         </div>
 
@@ -72,18 +69,18 @@
                                 <th>Пол</th>
                             </tr>
 
-                            <th:block th:each = "cont:${selected}">
+                            <th:block th:each = "cont:${chekedAnalysis}">
                                 <tr>
-                                    <td th:utext="${selected.indexOf(cont)+1}"></td>
+                                    <td th:utext="${chekedAnalysis.indexOf(cont)+1}"></td>
                                     <td th:utext="${cont.emc}"></td>
                                     <td th:utext="${cont.fio}"></td>
                                     <td th:utext="${cont.date_bio}"></td>
                                     <td th:utext="${cont.code}"></td>
-                                    <td th:utext="${cont.hiv}"></td>
-                                    <td th:utext="${cont.hbsAg}"></td>
-                                    <td th:utext="${cont.atHCV}"></td>
-                                    <td th:utext="${cont.syphIFA}"></td>
-                                    <td th:utext="${cont.syphMRP}"></td>
+                                    <td th:utext="${cont.resultHiv}"></td>
+                                    <td th:utext="${cont.resultHbsAg}"></td>
+                                    <td th:utext="${cont.resultatHCV}"></td>
+                                    <td th:utext="${cont.resultSyphIfa}"></td>
+                                    <td th:utext="${cont.resultMRP}"></td>
                                     <td th:utext="${cont.kontengent}"></td>
                                     <td th:utext="${cont.label}"></td>
                                     <td th:utext="${cont.totalChek()}"></td>

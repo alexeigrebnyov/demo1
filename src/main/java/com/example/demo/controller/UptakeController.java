@@ -37,6 +37,8 @@ public class UptakeController {
 //    BCScaner bcScaner;
     List<Contingent> uptake = new ArrayList<>();
     List<Analysis> uptakeByCode = new ArrayList<>();
+    List<Analysis> chekByCode = new ArrayList<>();
+    List<String> chek = new ArrayList<>();
 
     String code;
 
@@ -95,6 +97,17 @@ public class UptakeController {
 //        dist.forEach(System.out::println);
         return "byCode";
     }
+    @GetMapping(value = "/chek")
+    public String getCheked (ModelMap model) {
+        List<Analysis> dist = chekByCode
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        model.addAttribute("chekedAnalysis", chekByCode);
+        return "chek";
+
+    }
     @GetMapping(value = "/refresh")
     public String refresh(ModelMap model) {
     BCScaner.setCode();
@@ -129,7 +142,7 @@ public class UptakeController {
     public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
         Analysis analysis = new Analysis();
         List<Object[]> data = new ArrayList<>();
-        data = uptakeService.getData(codeInt);
+        data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0 \n",codeInt);
 //		System.out.println(data.size());
 //        try {
 //            Object[] data1 = data
@@ -161,19 +174,24 @@ public class UptakeController {
 
                 if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
                     analysis.setHiv("1");
-                }
+                    if (data1[4] != null) {analysis.setResultHiv(data1[4].toString());}
+                } else {analysis.setHiv("");}
                 if (data1[9].toString().equals("HBsAg")){
                     analysis.setHbsAg("1");
-                }
+                    if (data1[4] != null) {analysis.setResultHbsAg(data1[4].toString());}
+                } else {analysis.setHbsAg("");}
                 if (data1[9].toString().equals("Ат .к. HCV")){
                     analysis.setAtHCV("1");
-                }
-                if (data1[9].toString().equals("Syphilis МРП")) {
+                    if (data1[4] != null) {analysis.setResultatHCV(data1[4].toString());}
+                } else {analysis.setAtHCV("");}
+                if (data1[9].toString().equals("Сифилис МРП")) {
                     analysis.setSyphMRP("1");
-                }
+                    if (data1[4] != null) {analysis.setResultMRP(data1[4].toString());}
+                } else {analysis.setSyphMRP("");}
                 if (data1[9].toString().equals("Syphilis ИФА")) {
                     analysis.setSyphIFA("1");
-                }
+                    if (data1[4] != null) {analysis.setResultSyphIfa(data1[4].toString());}
+                } else {analysis.setSyphIFA("");}
 
 
             } catch (Exception ignored) {}
@@ -184,18 +202,121 @@ public class UptakeController {
 
             try {
                 analysis.setMotconsu_resp_id(data1[3].toString());
-                analysis.setUpsent(data1[4].toString());
 
             } catch (Exception ex) {}
+
+//            try {
+//                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
+//                analysis.setResultHiv(data1[4].toString());
+//
+//            } catch (Exception ex) {}
 //
         }
 //        System.out.println(analysis);
-           uptakeByCode.add(analysis);
+//        System.out.println(data.size());
+            uptakeByCode.add(analysis);
+            chek.add(analysis.getCode());
+
 
 //           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
 //        model.addAttribute("selected", uptakeByCode);
        code = null;
         return "redirect:/code";
+    }
+    @PostMapping(value = "/chek")
+    public String chekAnalysis () throws SQLException {
+
+        chek.add("3856");
+        List<Object[]> data = new ArrayList<>();
+        for (String upt: chek) {
+
+            Analysis analysis = new Analysis();
+        data = uptakeService.getData(" ",upt);
+//		System.out.println(data.size());
+//        try {
+//            Object[] data1 = data
+//                    .stream()
+//                    .findAny().get();
+//
+//
+//        } catch (Exception ignored) {}
+
+
+        for (Object[] data1 : data) {
+
+//            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
+//                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
+//                    + "" + data1[10]
+//            );
+            try {
+                analysis.setEmc(data1[0].toString());
+                analysis.setFio(data1[1].toString());
+
+
+                analysis.setMain_org_id(data1[5].toString());
+                analysis.setLabel(data1[6].toString());
+                analysis.setPatdirect_id(data1[7].toString());
+                analysis.setDate_bio(data1[8].toString());
+                analysis.setCode(data1[10].toString());
+
+
+
+
+                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
+                    analysis.setHiv("1");
+                    if (data1[4] != null) {analysis.setResultHiv(data1[4].toString());}
+                }  else {analysis.setHiv("");}
+                if (data1[9].toString().equals("HBsAg")){
+                    analysis.setHbsAg("1");
+                    if (data1[4] != null) {analysis.setResultHbsAg(data1[4].toString());}
+                } else {analysis.setHbsAg("");}
+                if (data1[9].toString().equals("Ат .к. HCV")){
+                    analysis.setAtHCV("1");
+                    if (data1[4] != null) {analysis.setResultatHCV(data1[4].toString());}
+                } else {analysis.setAtHCV("");}
+                if (data1[9].toString().equals("Сифилис МРП")) {
+                    analysis.setSyphMRP("1");
+                    if (data1[4] != null) {analysis.setResultMRP(data1[4].toString());}
+                } else {analysis.setSyphMRP("");}
+                if (data1[9].toString().equals("Syphilis ИФА")) {
+                    analysis.setSyphIFA("1");
+                    if (data1[4] != null) {analysis.setResultSyphIfa(data1[4].toString());}
+                } else {analysis.setSyphIFA("");}
+
+
+            } catch (Exception ignored) {}
+
+            try {
+                analysis.setKontengent(data1[2].toString());
+            } catch (Exception ex) {}
+
+            try {
+                analysis.setMotconsu_resp_id(data1[3].toString());
+
+            } catch (Exception ex) {}
+
+//            try {
+//                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
+//                analysis.setResultHiv(data1[4].toString());
+//
+//            } catch (Exception ex) {}
+
+//
+        }
+//        System.out.println(analysis);
+//        System.out.println(data.size());
+
+            chekByCode.add(analysis);
+
+        }
+
+        uptakeByCode.forEach(System.out::println);
+        System.out.println();
+        chek.forEach(System.out::println);
+        chekByCode.forEach(System.out::println);
+//           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
+//        model.addAttribute("selected", uptakeByCode);
+        return "redirect:/chek";
     }
 
 
