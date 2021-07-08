@@ -297,7 +297,7 @@ public class Analysis {
 
     }
     public String totalChek() {
-        if(chek() && chekatHCV() && chekHbs() && chekHiv() && chekSyphIfa()) {return "выполнено";}
-        return "не выполнено";
+        if(chek() && chekatHCV() && chekHbs() && chekHiv() && chekSyphIfa()) {return " ";}
+        return "!!!!!";
     }
 }

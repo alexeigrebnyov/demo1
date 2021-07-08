@@ -27,9 +27,9 @@ public class AllController {
         this.hivService = hivService;
     }
 
-    @GetMapping(value = {"/result"})
+    @GetMapping(value = {"/"})
     public String getAl(ModelMap modelMap){
-           modelMap.addAttribute("hivs", hivService.allHivs());
+//           modelMap.addAttribute("hivs", hivService.allHivs());
             return  "hello";
     }
 

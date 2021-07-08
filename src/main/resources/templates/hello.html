@@ -15,29 +15,31 @@
     <div>
         <div class="row" style="height: 100vh">
 
-            <nav class="nav flex-column nav-pills col-md-2" >
-                <a class="nav-link" th:href="@{/}">Забор</a>
-                <a class="nav-link active" href="#">Результаты</a>
+            <nav class="nav flex-column nav-pills col-md-1" >
+                <a class="nav-link active" href="#">Главная</a>
+                <a class="nav-link" th:href="@{/code}">Забор</a>
+                <a class="nav-link" th:href="@{/chek}">Результаты</a>
+
 
             </nav>
             <div class="col-md-10" style="background-color: #F8F8FF">
                 <div class="container-fluid">
 
-            <table class="table table-striped" border="1">
-                <tr>
-                    <th>Id</th>
-                    <th>Cod</th>
-                    <th>Result</th>
-                </tr>
-                <th:block th:each = "hiv:${hivs}">
-            <tr>
-                <td th:utext="${hiv.patientId}"></td>
-                <td th:utext="${hiv.uptakeCod}"></td>
-                <td th:utext="${hiv.result}"></td>
-            </tr>
+<!--            <table class="table table-striped" border="1">-->
+<!--                <tr>-->
+<!--                    <th>Id</th>-->
+<!--                    <th>Cod</th>-->
+<!--                    <th>Result</th>-->
+<!--                </tr>-->
+<!--                <th:block th:each = "hiv:${hivs}">-->
+<!--            <tr>-->
+<!--                <td th:utext="${hiv.patientId}"></td>-->
+<!--                <td th:utext="${hiv.uptakeCod}"></td>-->
+<!--                <td th:utext="${hiv.result}"></td>-->
+<!--            </tr>-->
 
-          </th:block>
-            </table>
+<!--          </th:block>-->
+<!--            </table>-->
                 </div>
             </div>
         </div>

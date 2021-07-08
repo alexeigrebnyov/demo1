@@ -10,16 +10,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <link rel="icon" href="spring_leaf_plant_nature_leaves_garden_environment_icon_133309.ico">
-<!--    <meta http-equiv="refresh" content="1">-->
+    <meta http-equiv="refresh" content="1">
     <title>Title</title>
 </head>
 <body>
 <div>
     <div class="row" style="height: 100vh">
 
-        <nav class="nav flex-column nav-pills col-md-2" >
+        <nav class="nav flex-column nav-pills col-md-1" >
+            <a class="nav-link" th:href="@{/}">Главная</a>
             <a class="nav-link active" href="#">Забор</a>
-            <a class="nav-link " th:href="@{/result}">Результаты</a>
+            <a class="nav-link " th:href="@{/chek}" >Результаты</a>
 
         </nav>
         <div class="col-md-10" style="background-color: #F8F8FF">
@@ -38,7 +39,12 @@
                     <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div>
                             <br>
-                            <h4>ВИЧ</h4>
+                            <h4>ВИЧ, Геп В, С, СИФ</h4>
+                            <div class="float-right">
+                                <form name="writeForm" id="writeForm" th:action="@{/write}" method="post">
+                                    <input type="submit" class="btn btn-danger" value="Завершить сканирование">
+                                </form>
+                            </div>
                             <div class="bg-white">
                                 <br>
 <!--                                <div>-->
@@ -49,27 +55,33 @@
 <!--                                </div>-->
                                 <div id="div_refresh">
                                     <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
-<!--                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">-->
-                                        <input type="text" name="codeInt" id="codeInt" >
-                                         <input type="submit" value="Отправить">
+                                        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
+<!--                                        <input type="text" name="codeInt" id="codeInt" >-->
+<!--                                         <input type="submit" value="Отправить">-->
                                     </form>
-                                    <form name="writeForm" id="writeForm" th:action="@{/write}" method="post">
-                                        <input type="submit" value="Завершить">
-                                    </form>
-                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">
-                                        <input type="submit" value="Проверить">
-                                    </form>
+
+<!--                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">-->
+<!--                                        <input type="submit" value="Проверить">-->
+<!--                                    </form>-->
                                 </div>
                             </div>
                         </div>
 
                         <table class="table table-striped" border="1">
                             <tr>
+                                <th>№</th>
                                 <th>ЭМК</th>
-                                <th>К.Б.</th>
+                                <th>ФИО</th>
+                                <th>Дата забора</th>
+                                <th>Код забора</th>
                                 <th>ВИЧ</th>
-                                <th>Контингент</th>
-                                <th>Пол</th>
+                                <th>HBsAg</th>
+                                <th>Anti-HCV</th>
+                                <th>SyphIFA</th>
+                                <th>МРП</th>
+                                <th>Контенгент</th>
+                                <th>Филиал</th>
+<!--                                <th>Статус</th>-->
                             </tr>
 
                             <th:block th:each = "cont:${selected}">
@@ -86,11 +98,11 @@
                                     <td th:utext="${cont.syphMRP}"></td>
                                     <td th:utext="${cont.kontengent}"></td>
                                     <td th:utext="${cont.label}"></td>
-                                    <td th:utext="${cont.totalChek()}"></td>
+<!--                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-primary"></td>-->
 
-                                    <td>
-                                        <button class="btn btn-danger" type="submit">x</button>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <button class="btn btn-danger" type="submit">x</button>-->
+<!--                                    </td>-->
 
                             </th:block>
 

@@ -17,12 +17,13 @@
 <div>
     <div class="row" style="height: 100vh">
 
-        <nav class="nav flex-column nav-pills col-md-2" >
-            <a class="nav-link active" href="#">Забор</a>
-            <a class="nav-link " th:href="@{/result}">Результаты</a>
+        <nav class="nav flex-column nav-pills col-md-1" >
+            <a class="nav-link" th:href="@{/}">Главная</a>
+            <a class="nav-link" th:href="@{/code}">Забор</a>
+            <a class="nav-link active" href="#" >Результаты</a>
 
         </nav>
-        <div class="col-md-10" style="background-color: #F8F8FF">
+        <div class="container-fluid" style="background-color: #F8F8FF">
             <div class="container-fluid">
                 <h1>Анализы в Казань</h1>
                 <!-- Nav tabs -->
@@ -62,11 +63,19 @@
 
                         <table class="table table-striped" border="1">
                             <tr>
+                                <th>№</th>
                                 <th>ЭМК</th>
-                                <th>К.Б.</th>
+                                <th>ФИО</th>
+                                <th>Дата забора</th>
+                                <th>Код забора</th>
                                 <th>ВИЧ</th>
-                                <th>Контингент</th>
-                                <th>Пол</th>
+                                <th>HBsAg</th>
+                                <th>Anti-HCV</th>
+                                <th>SyphIFA</th>
+                                <th>МРП</th>
+                                <th>Контенгент</th>
+                                <th>Филиал</th>
+                                <th>Статус</th>
                             </tr>
 
                             <th:block th:each = "cont:${chekedAnalysis}">
@@ -83,11 +92,11 @@
                                     <td th:utext="${cont.resultMRP}"></td>
                                     <td th:utext="${cont.kontengent}"></td>
                                     <td th:utext="${cont.label}"></td>
-                                    <td th:utext="${cont.totalChek()}"></td>
+                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-danger"></td>
 
-                                    <td>
-                                        <button class="btn btn-danger" type="submit">x</button>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <button class="btn btn-danger" type="submit">x</button>-->
+<!--                                    </td>-->
 
                             </th:block>
 
@@ -110,23 +119,21 @@
 
     </div>
 </div>
-</div>
-</div>
-<script>
-    $( function() {
-        if ( $( '#codeInt' ).val() !== '' ) {
-            $( '#codeForm' ).submit();
-        }
-    });
-</script>
-<script>
-    // let URL = "divRefresh.html"
-    $(document).ready(function () {
-       $( '#div_refresh' ).load(document.URL + '#div_refresh');
-       setInterval(function () {
-           $( '#div_refresh' ).load(document.URL + '#div_refresh');
-       }, 1000)
-    })
-</script>
+<!--<script>-->
+<!--    $( function() {-->
+<!--        if ( $( '#codeInt' ).val() !== '' ) {-->
+<!--            $( '#codeForm' ).submit();-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--<script>-->
+<!--    // let URL = "divRefresh.html"-->
+<!--    $(document).ready(function () {-->
+<!--       $( '#div_refresh' ).load(document.URL + '#div_refresh');-->
+<!--       setInterval(function () {-->
+<!--           $( '#div_refresh' ).load(document.URL + '#div_refresh');-->
+<!--       }, 1000)-->
+<!--    })-->
+<!--</script>-->
 </body>
 </html>

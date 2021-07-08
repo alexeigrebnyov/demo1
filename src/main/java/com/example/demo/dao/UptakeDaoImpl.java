@@ -51,18 +51,19 @@ public class UptakeDaoImpl implements UptakeDao {
         List<Object[]> objects = new ArrayList<>();
         Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
+
         ResultSet resultSet = statement.executeQuery("select  PATDIREC.PATIENTS_ID,\n" +
                 "dbo.fNNPlus_Patient (pat.PATIENTS_ID,1),\n" +
                 "--pat.nom+' '+substring(pat.PRENOM,1,1)+'. '+substring(pat.PATRONYME,1,1)+'.', \n" +
                 "\n" +
                 "(case \n" +
-                "when kontengent=0 then '108.б - доноры биологических жидкостей'\n" +
-                "when kontengent=1 then '109.а - беременные при взятии на учет'\n" +
-                "when kontengent=2 then '109.б - беременные на сроке 25-26 и 38-39 недель'\n" +
-                "when kontengent=3 then '116 б - в соответствии со стандартами мед. помощи (ВРТ, перед манипуляциями,добровольное обследование)'\n" +
-                "when kontengent=4 then '110 - половые партнеры беременных'\n" +
-                "when kontengent=5 then '132.б - профилактический медосмотр'\n" +
-                "when kontengent=6 then '132.в - медицинские аварийные ситуации'\n" +
+                "when kontengent=0 then '108.б'\n" +
+                "when kontengent=1 then '109.а'\n" +
+                "when kontengent=2 then '109.б'\n" +
+                "when kontengent=3 then '116 б'\n" +
+                "when kontengent=4 then '110'\n" +
+                "when kontengent=5 then '132.б'\n" +
+                "when kontengent=6 then '132.в'\n" +
                 "end),\n" +
                 "DIR_ANSW.MOTCONSU_RESP_ID\n" +
                 ",\n" +
@@ -106,6 +107,7 @@ public class UptakeDaoImpl implements UptakeDao {
                 "and  PATDIREC.BIO_CODE= -- код забора\n" + bio_code+
                 "and PATDIREC.DATE_BIO >dateadd(day,-30,getdate()) --\n" +
                 " --and FM_DEP.MAIN_ORG_ID=20 --филиал выполнивший забор биоматериала");
+
         while (resultSet.next()) {
             objects.add(new Object[] {
                     resultSet.getObject(1),
