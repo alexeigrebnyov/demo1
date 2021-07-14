@@ -22,6 +22,7 @@ public class Analysis {
     private String syphIFA;
     private String syphMRP;
     private String code;
+    private String sex;
 
     public Analysis() {
     }
@@ -203,6 +204,14 @@ public class Analysis {
         this.resultMRP = resultMRP;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     @Override
     public String toString() {
         return "Analysis{" +
@@ -225,6 +234,7 @@ public class Analysis {
                 ", syphIFA='" + syphIFA + '\'' +
                 ", syphMRP='" + syphMRP + '\'' +
                 ", code='" + code + '\'' +
+                ", sex='" + sex + '\'' +
                 '}';
     }
 

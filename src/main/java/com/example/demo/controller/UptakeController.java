@@ -7,6 +7,7 @@ import com.example.demo.service.HIVService;
 import com.example.demo.service.UptakeService;
 import com.example.demo.utils.BCScaner;
 import com.example.demo.utils.Test;
+import com.example.demo.utils.XLConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.curs.xylophone.XML2SpreadSheetError;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +36,7 @@ public class UptakeController {
 
     ContService contService;
     UptakeService uptakeService;
+    XLConstructor xlConstructor;
 //    BCScaner bcScaner;
     List<Contingent> uptake = new ArrayList<>();
     List<Analysis> uptakeByCode = new ArrayList<>();
@@ -99,6 +102,7 @@ public class UptakeController {
     }
     @GetMapping(value = "/chek")
     public String getCheked (ModelMap model) throws SQLException {
+        if (chekByCode.size()!=0) {chekByCode.clear();}
         chekAnalysis();
         List<Analysis> dist = chekByCode
                 .stream()
@@ -117,7 +121,7 @@ public class UptakeController {
 
     }
     @PostMapping(value = "/write")
-    public String write() throws IOException {
+    public String write() throws IOException, XML2SpreadSheetError {
         List<Analysis> dist = uptakeByCode
                 .stream()
                 .distinct()
@@ -134,6 +138,9 @@ public class UptakeController {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+        XLConstructor.writeXML();
+        xlConstructor.xml2XLSX();
+
         uptakeByCode.clear();
         return "redirect:/code";
 
@@ -144,7 +151,7 @@ public class UptakeController {
     public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
         Analysis analysis = new Analysis();
         List<Object[]> data = new ArrayList<>();
-        data = uptakeService.getData(" ",codeInt);
+        data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0\n",codeInt);
 //        try {
 //            Object[] data1 = data
 //                    .stream()
@@ -169,6 +176,7 @@ public class UptakeController {
                     analysis.setPatdirect_id(data1[7].toString());
                     analysis.setDate_bio(data1[8].toString());
                     analysis.setCode(data1[10].toString());
+                    analysis.setSex(data1[11].toString());
 
 
                     if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
@@ -350,6 +358,12 @@ public class UptakeController {
         this.code = code;
     }
 
+    public List<Analysis> getUptakeByCode() {
+        return uptakeByCode
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
     //    public  String getByCode();
 //
 }

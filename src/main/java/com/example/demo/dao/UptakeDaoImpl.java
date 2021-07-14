@@ -87,7 +87,8 @@ public class UptakeDaoImpl implements UptakeDao {
                 "--,PATDIREC.PL_EXAM_ID,\n" +
                 " --LAB_METHODS.LAB_METHODS_ID, \n" +
                 " LAB_METHODS.CODE, \n" +
-                "  PATDIREC.BIO_CODE\n" +
+                "  PATDIREC.BIO_CODE,\n" +
+                "  PAT.POL\n" +
                 "\n" +
                 ",* from  PATDIREC PATDIREC WITH(NOLOCK)  JOIN PL_EXAM PL_EXAM WITH(NOLOCK)  ON PATDIREC.PL_EXAM_ID = PL_EXAM.PL_EXAM_ID \n" +
                 "INNER JOIN DIR_ANSW ON PATDIREC.PATDIREC_ID=DIR_ANSW.PATDIREC_ID\n" +
@@ -120,7 +121,8 @@ public class UptakeDaoImpl implements UptakeDao {
                     resultSet.getObject(8),
                     resultSet.getObject(9),
                     resultSet.getObject(10),
-                    resultSet.getObject(11)
+                    resultSet.getObject(11),
+                    resultSet.getObject(12)
             });
         }
 //

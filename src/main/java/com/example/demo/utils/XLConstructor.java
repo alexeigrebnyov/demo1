@@ -1,7 +1,7 @@
 package com.example.demo.utils;
 
-import com.example.demo.model.HIV;
-import com.example.demo.service.HIVService;
+import com.example.demo.controller.UptakeController;
+import com.example.demo.model.Analysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -23,28 +23,29 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
 public class XLConstructor {
 
-    private static HIVService hivService;
+    private static UptakeController uptakeService;
 
     @Autowired
-    public XLConstructor(HIVService hivService) {
-        this.hivService = hivService;
+    public XLConstructor(UptakeController uptakeService) {
+        this.uptakeService = uptakeService;
     }
 
     public static void xml2XLSX() throws IOException, XML2SpreadSheetError {
-        FileInputStream data = new FileInputStream("C:/Users/alexei/Downloads/Report1.xml");
-        File out = new File(".","report.xlsx");
+        FileInputStream data = new FileInputStream("C:/Repo/Report1.xml");
+        File out = new File("C:/Repo/report.xlsx");
         FileOutputStream output = new FileOutputStream(out);
-        File template = new File("C:/Users/alexei/Downloads/template.xlsx");
-        File desc = new File("C:/Users/alexei/Downloads/descriptor.xml");
+        File template = new File("C:/Repo/template.xlsx");
+        File desc = new File("C:/Repo/descriptor.xml");
         XML2Spreadsheet.process(data, desc, template, false, output);
 
     }
-    private static void writeDocument(Document document, String path)
+    private static void writeDocument(Document document)
             throws TransformerFactoryConfigurationError
     {
         Transformer trf = null;
@@ -54,7 +55,7 @@ public class XLConstructor {
             trf = TransformerFactory.newInstance()
                     .newTransformer();
             src = new DOMSource(document);
-            fos = new FileOutputStream(path);
+            fos = new FileOutputStream("C:/Repo/Report1.xml");
 
             StreamResult result = new StreamResult(fos);
             trf.transform(src, result);
@@ -76,39 +77,82 @@ public class XLConstructor {
             Element e_root   = doc.createElement("report");
 //			e_root.setAttribute("lang", "en");
             Element columnId  = doc.createElement("column");
-            columnId.setAttribute("data", "id");
+            columnId.setAttribute("data", "Фио");
             Element columnpatientId = doc.createElement("column");
-            columnpatientId.setAttribute("data", "patientId");
+            columnpatientId.setAttribute("data", "Дата забора");
             Element columnuptakeCod = doc.createElement("column");
-            columnuptakeCod.setAttribute("data", "uptakeCod");
+            columnuptakeCod.setAttribute("data", "Код забора");
+            Element columnnumber = doc.createElement("column");
+            columnnumber.setAttribute("data", "ВИЧ");
             Element columnresult = doc.createElement("column");
-            columnresult.setAttribute("data", "result");
+            columnresult.setAttribute("data", "HBsAg");
             e_root.appendChild(columnId);
             e_root.appendChild(columnpatientId);
             e_root.appendChild(columnuptakeCod);
+            e_root.appendChild(columnnumber);
             e_root.appendChild(columnresult);
             doc.appendChild(e_root);
 //			if (posts.size() == 0)
 //				return;
 
-            List<HIV> users  = hivService.allHivs();
+            List<Analysis> users  = uptakeService.getUptakeByCode();
+//            List<String> hivs = users
+//                    .stream().map(Analysis::getHiv)
+//                    .collect(Collectors.toList());
+            int hivIterator = 1;
+//            int hivCount = (int) users
+//                    .stream()
+//                    .filter(e -> e.getHiv().equals("1"))
+//                    .count();
+            int hbsIterator=1;
+//            int hbsCount = (int) users
+//                    .stream()
+//                    .filter(e -> e.getHbsAg().equals("1"))
+//                    .count();
+            int hcvIterator=1;
+//            int hcvCount = (int) users
+//                    .stream()
+//                    .filter(e -> e.getAtHCV().equals("1"))
+//                    .count();
 
-            for (HIV hiv : users) {
+            for (Analysis hiv : users) {
+//                int hivNumber = hivCount - (hivCount-hivIterator);
+//                int hbsNumber = hbsCount - (hbsCount-hbsIterator);
+//                int hcvNumber = hcvCount - (hcvCount-hcvIterator);
+//                int z = hivs.size()-(hivs.size()-i);
                 Element item = doc.createElement("item");
-                item.setAttribute("name", hiv.getPatientId());
+                item.setAttribute("name", hiv.getEmc());
                 Element id = doc.createElement("data");
-                id.setAttribute("value", hiv.getId().toString());
+                id.setAttribute("value", hiv.getFio());
                 Element patientid = doc.createElement("data");
-                patientid.setAttribute("value", hiv.getPatientId());
+                patientid.setAttribute("value", hiv.getDate_bio());
                 Element uptakeCod = doc.createElement("data");
-                uptakeCod.setAttribute("value", hiv.getUptakeCod());
+                uptakeCod.setAttribute("value", hiv.getCode());
+                Element number = doc.createElement("data");
+                if (hiv.getHiv().equals("1")) {
+                    number.setAttribute("value", String.valueOf(hivIterator));
+                    hivIterator++;
+                } else {number.setAttribute("value", "");}
                 Element result = doc.createElement("data");
-                result.setAttribute("value", hiv.getResult());
+                if (hiv.getHbsAg().equals("1")) {
+                    result.setAttribute("value", String.valueOf(hbsIterator));
+                    hbsIterator++;
+                } else {result.setAttribute("value", "");}
+                Element hcv = doc.createElement("data");
+                if (hiv.getAtHCV().equals("1")) {
+                    hcv.setAttribute("value", String.valueOf(hcvIterator));
+                    hcvIterator++;
+                } else {hcv.setAttribute("value", "");}
                 item.appendChild(id);
                 item.appendChild(patientid);
                 item.appendChild(uptakeCod);
+                item.appendChild(number);
                 item.appendChild(result);
+                item.appendChild(hcv);
                 e_root.appendChild (item);
+//                if (hiv.getHiv().equals("1")) {
+//                    i++;
+//                }
             }
 //			System.out.println("    форумов : " + forums.size());
 //			for (String forum : forums) {
@@ -121,7 +165,7 @@ public class XLConstructor {
         } finally {
             // Сохраняем Document в XML-файл
             if (doc != null)
-                writeDocument(doc, "C:/Users/alexei/Downloads/Report1.xml");
+                writeDocument(doc);
         }
 
     }
