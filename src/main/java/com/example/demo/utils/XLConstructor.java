@@ -100,10 +100,10 @@ public class XLConstructor {
 //                    .stream().map(Analysis::getHiv)
 //                    .collect(Collectors.toList());
             int hivIterator = 1;
-//            int hivCount = (int) users
-//                    .stream()
-//                    .filter(e -> e.getHiv().equals("1"))
-//                    .count();
+            int hivCount = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("116 б"))
+                    .count();
             int hbsIterator=1;
 //            int hbsCount = (int) users
 //                    .stream()
@@ -114,7 +114,7 @@ public class XLConstructor {
 //                    .stream()
 //                    .filter(e -> e.getAtHCV().equals("1"))
 //                    .count();
-
+            int ifaIterator = 1;
             for (Analysis hiv : users) {
 //                int hivNumber = hivCount - (hivCount-hivIterator);
 //                int hbsNumber = hbsCount - (hbsCount-hbsIterator);
@@ -143,17 +143,33 @@ public class XLConstructor {
                     hcv.setAttribute("value", String.valueOf(hcvIterator));
                     hcvIterator++;
                 } else {hcv.setAttribute("value", "");}
+                Element ifa = doc.createElement("data");
+                if (hiv.getSyphIFA().equals("1")) {
+                    ifa.setAttribute("value", String.valueOf(ifaIterator));
+                    ifaIterator++;
+                } else {ifa.setAttribute("value", "");}
+
                 item.appendChild(id);
                 item.appendChild(patientid);
                 item.appendChild(uptakeCod);
                 item.appendChild(number);
                 item.appendChild(result);
                 item.appendChild(hcv);
+                item.appendChild(ifa);
+
                 e_root.appendChild (item);
+
 //                if (hiv.getHiv().equals("1")) {
 //                    i++;
 //                }
             }
+//            Element item1 = doc.createElement("item1");
+//            item1.setAttribute("name1", "116 б");
+//            Element kont116F = doc.createElement("data1");
+//            kont116F.setAttribute("value1", String.valueOf(hivCount));
+//            item1.appendChild(kont116F);
+//            e_root.appendChild(item1);
+
 //			System.out.println("    форумов : " + forums.size());
 //			for (String forum : forums) {
 //				Element e = doc.createElement("forum");
