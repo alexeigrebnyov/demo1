@@ -103,18 +103,21 @@ public class XLConstructor {
             int hivCount = (int) users
                     .stream()
                     .filter(e -> e.getKontengent().equals("116 б"))
+                    .filter(e ->e.getSex().equals("1"))
                     .count();
             int hbsIterator=1;
-//            int hbsCount = (int) users
-//                    .stream()
-//                    .filter(e -> e.getHbsAg().equals("1"))
-//                    .count();
+            int hbsCount = (int) users
+                    .stream()
+                    .filter(e -> (e.getKontengent().equals("116 б")&& e.getSex().equals("0")))
+                    .count();
             int hcvIterator=1;
 //            int hcvCount = (int) users
 //                    .stream()
 //                    .filter(e -> e.getAtHCV().equals("1"))
 //                    .count();
             int ifaIterator = 1;
+            int iterator116f = 0;
+            int iterator116m = 0;
             for (Analysis hiv : users) {
 //                int hivNumber = hivCount - (hivCount-hivIterator);
 //                int hbsNumber = hbsCount - (hbsCount-hbsIterator);
@@ -148,6 +151,14 @@ public class XLConstructor {
                     ifa.setAttribute("value", String.valueOf(ifaIterator));
                     ifaIterator++;
                 } else {ifa.setAttribute("value", "");}
+                Element kont116F = doc.createElement("data");
+                if (iterator116f <1) {
+                    kont116F.setAttribute("value", String.valueOf(hivCount));
+                    iterator116f++;
+                }else if (iterator116m<1) {kont116F.setAttribute("value", String.valueOf(hbsCount));
+                iterator116m++;
+                }
+
 
                 item.appendChild(id);
                 item.appendChild(patientid);
@@ -156,6 +167,7 @@ public class XLConstructor {
                 item.appendChild(result);
                 item.appendChild(hcv);
                 item.appendChild(ifa);
+                item.appendChild(kont116F);
 
                 e_root.appendChild (item);
 

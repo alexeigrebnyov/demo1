@@ -50,7 +50,6 @@ public class Database {
 public DataSource getDataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-
     return dataSource;
 }
 public Connection getConnection() throws SQLException {

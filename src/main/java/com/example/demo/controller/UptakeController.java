@@ -325,7 +325,9 @@ public class UptakeController {
             } catch (Exception ignored) {}
 
             try {
-                analysis.setKontengent(data1[2].toString());
+                if (data1[2] != null) {
+                    analysis.setKontengent(data1[2].toString());
+                } else {analysis.setKontengent(" ");}
             } catch (Exception ex) {}
 
             try {
