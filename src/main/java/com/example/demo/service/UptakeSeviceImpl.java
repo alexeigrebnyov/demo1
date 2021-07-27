@@ -35,6 +35,10 @@ public class UptakeSeviceImpl implements UptakeService {
     public List<Object[]> getData(String done,String bio_code) throws SQLException {
         return uptakeDao.getData(done, bio_code);
     }
+    @Override
+    public List<Object[]> chek (String done,String bio_code) throws SQLException {
+        return uptakeDao.chek(done, bio_code);
+    }
 
     @Override
     public void add(UptakeReport hiv) {

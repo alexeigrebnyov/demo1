@@ -80,7 +80,7 @@ public class UptakeController {
     @GetMapping(value = "/code")
     public String updateUser1(ModelMap model) {
 
-//    Test.getScan();
+    Test.getScan();
         List<Analysis> dist = uptakeByCode
                 .stream()
                 .distinct()
@@ -102,7 +102,7 @@ public class UptakeController {
     }
     @GetMapping(value = "/chek")
     public String getCheked (ModelMap model) throws SQLException {
-        if (chekByCode.size()!=0) {chekByCode.clear();}
+//        if (chekByCode.size()!=0) {chekByCode.clear();}
         chekAnalysis();
         List<Analysis> dist = chekByCode
                 .stream()
@@ -113,12 +113,123 @@ public class UptakeController {
         return "chek";
 
     }
-    @GetMapping(value = "/refresh")
-    public String refresh(ModelMap model) {
-    BCScaner.setCode();
-    model.addAttribute("data1", code);
-    return "divRefresh";
+    @PostMapping(value = "/refresh")
+    public String refresh() throws SQLException {
 
+        if (uptakeByCode.size()!=0) {uptakeByCode.clear();}
+        for (String ch: chek) {
+
+            Analysis analysis = new Analysis();
+            List<Object[]> data = new ArrayList<>();
+            data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0\n", ch);
+//        try {
+//            Object[] data1 = data
+//                    .stream()
+//                    .findAny().get();
+//
+//
+//        } catch (Exception ignored) {}
+
+            if (data.size() != 0) {
+                for (Object[] data1 : data) {
+//            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
+//                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
+//                    + "" + data1[10]
+//            );
+                    try {
+                        analysis.setEmc(data1[0].toString());
+                        analysis.setFio(data1[1].toString());
+
+
+                        analysis.setMain_org_id(data1[5].toString());
+                        analysis.setLabel(data1[6].toString());
+                        analysis.setPatdirect_id(data1[7].toString());
+                        analysis.setDate_bio(data1[8].toString());
+                        analysis.setCode(data1[10].toString());
+                        analysis.setSex(data1[11].toString());
+
+
+                        if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
+                            analysis.setHiv("1");
+                            if (data1[4] != null) {
+                                analysis.setResultHiv(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getHiv() == null)
+                                analysis.setHiv("");
+                        }
+                        if (data1[9].toString().equals("HBsAg")) {
+                            analysis.setHbsAg("1");
+                            if (data1[4] != null) {
+                                analysis.setResultHbsAg(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getHbsAg() == null)
+                                analysis.setHbsAg("");
+                        }
+                        if (data1[9].toString().equals("Ат .к. HCV")) {
+                            analysis.setAtHCV("1");
+                            if (data1[4] != null) {
+                                analysis.setResultatHCV(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getAtHCV() == null)
+                                analysis.setAtHCV("");
+                        }
+                        if (data1[9].toString().equals("Сифилис МРП")) {
+                            analysis.setSyphMRP("1");
+                            if (data1[4] != null) {
+                                analysis.setResultMRP(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getSyphMRP() == null)
+                                analysis.setSyphMRP("");
+                        }
+                        if (data1[9].toString().equals("Syphilis ИФА")) {
+                            analysis.setSyphIFA("1");
+                            if (data1[4] != null) {
+                                analysis.setResultSyphIfa(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getSyphIFA() == null)
+                                analysis.setSyphIFA("");
+                        }
+
+
+                    } catch (Exception ignored) {
+                    }
+
+                    try {
+                        analysis.setKontengent(data1[2].toString());
+                    } catch (Exception ex) {
+                        analysis.setKontengent("");
+                    }
+
+                    try {
+                        analysis.setMotconsu_resp_id(data1[3].toString());
+
+                    } catch (Exception ex) {
+                    }
+
+//            try {
+//                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
+//                analysis.setResultHiv(data1[4].toString());
+//
+//            } catch (Exception ex) {}
+//
+                }
+//                uptakeByCode.removeIf(n -> (n.getEmc().equals(analysis.getEmc())&&n.getCode().equals(analysis.getCode())));
+                uptakeByCode.add(analysis);
+//        chek.add(analysis.getCode());
+
+            }
+        }
+
+
+//           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
+//        model.addAttribute("selected", uptakeByCode);
+//        code = null;
+        return "redirect:/code";
     }
     @PostMapping(value = "/write")
     public String write() throws IOException, XML2SpreadSheetError {
@@ -141,7 +252,7 @@ public class UptakeController {
         XLConstructor.writeXML();
         xlConstructor.xml2XLSX();
 
-        uptakeByCode.clear();
+//        uptakeByCode.clear();
         return "redirect:/code";
 
 
@@ -149,9 +260,11 @@ public class UptakeController {
 
     @PostMapping(value = "/code")
     public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
-        Analysis analysis = new Analysis();
-        List<Object[]> data = new ArrayList<>();
-        data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0\n",codeInt);
+        chek.add(codeInt);
+
+            Analysis analysis = new Analysis();
+            List<Object[]> data = new ArrayList<>();
+            data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0\n", codeInt);
 //        try {
 //            Object[] data1 = data
 //                    .stream()
@@ -160,80 +273,86 @@ public class UptakeController {
 //
 //        } catch (Exception ignored) {}
 
-        if (data.size() != 0) {
-            for (Object[] data1 : data) {
+            if (data.size() != 0) {
+                for (Object[] data1 : data) {
 //            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
 //                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
 //                    + "" + data1[10]
 //            );
-                try {
-                    analysis.setEmc(data1[0].toString());
-                    analysis.setFio(data1[1].toString());
+                    try {
+                        analysis.setEmc(data1[0].toString());
+                        analysis.setFio(data1[1].toString());
 
 
-                    analysis.setMain_org_id(data1[5].toString());
-                    analysis.setLabel(data1[6].toString());
-                    analysis.setPatdirect_id(data1[7].toString());
-                    analysis.setDate_bio(data1[8].toString());
-                    analysis.setCode(data1[10].toString());
-                    analysis.setSex(data1[11].toString());
+                        analysis.setMain_org_id(data1[5].toString());
+                        analysis.setLabel(data1[6].toString());
+                        analysis.setPatdirect_id(data1[7].toString());
+                        analysis.setDate_bio(data1[8].toString());
+                        analysis.setCode(data1[10].toString());
+                        analysis.setSex(data1[11].toString());
 
 
-                    if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
-                        analysis.setHiv("1");
-                        if (data1[4] != null) {
-                            analysis.setResultHiv(data1[4].toString());
+                        if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
+                            analysis.setHiv("1");
+                            if (data1[4] != null) {
+                                analysis.setResultHiv(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getHiv() == null)
+                                analysis.setHiv("");
                         }
-                    } else { if (analysis.getHiv()==null)
-                        analysis.setHiv("");
-                    }
-                    if (data1[9].toString().equals("HBsAg")) {
-                        analysis.setHbsAg("1");
-                        if (data1[4] != null) {
-                            analysis.setResultHbsAg(data1[4].toString());
+                        if (data1[9].toString().equals("HBsAg")) {
+                            analysis.setHbsAg("1");
+                            if (data1[4] != null) {
+                                analysis.setResultHbsAg(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getHbsAg() == null)
+                                analysis.setHbsAg("");
                         }
-                    } else { if (analysis.getHbsAg() == null)
-                        analysis.setHbsAg("");
-                    }
-                    if (data1[9].toString().equals("Ат .к. HCV")) {
-                        analysis.setAtHCV("1");
-                        if (data1[4] != null) {
-                            analysis.setResultatHCV(data1[4].toString());
+                        if (data1[9].toString().equals("Ат .к. HCV")) {
+                            analysis.setAtHCV("1");
+                            if (data1[4] != null) {
+                                analysis.setResultatHCV(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getAtHCV() == null)
+                                analysis.setAtHCV("");
                         }
-                    } else { if (analysis.getAtHCV() == null)
-                        analysis.setAtHCV("");
-                    }
-                    if (data1[9].toString().equals("Сифилис МРП")) {
-                        analysis.setSyphMRP("1");
-                        if (data1[4] != null) {
-                            analysis.setResultMRP(data1[4].toString());
+                        if (data1[9].toString().equals("Сифилис МРП")) {
+                            analysis.setSyphMRP("1");
+                            if (data1[4] != null) {
+                                analysis.setResultMRP(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getSyphMRP() == null)
+                                analysis.setSyphMRP("");
                         }
-                    } else { if (analysis.getSyphMRP() == null)
-                        analysis.setSyphMRP("");
-                    }
-                    if (data1[9].toString().equals("Syphilis ИФА")) {
-                        analysis.setSyphIFA("1");
-                        if (data1[4] != null) {
-                            analysis.setResultSyphIfa(data1[4].toString());
+                        if (data1[9].toString().equals("Syphilis ИФА")) {
+                            analysis.setSyphIFA("1");
+                            if (data1[4] != null) {
+                                analysis.setResultSyphIfa(data1[4].toString());
+                            }
+                        } else {
+                            if (analysis.getSyphIFA() == null)
+                                analysis.setSyphIFA("");
                         }
-                    } else { if (analysis.getSyphIFA() == null)
-                        analysis.setSyphIFA("");
+
+
+                    } catch (Exception ignored) {
                     }
 
+                    try {
+                        analysis.setKontengent(data1[2].toString());
+                    } catch (Exception ex) {
+                        analysis.setKontengent("");
+                    }
 
-                } catch (Exception ignored) {
-                }
+                    try {
+                        analysis.setMotconsu_resp_id(data1[3].toString());
 
-                try {
-                    analysis.setKontengent(data1[2].toString());
-                } catch (Exception ex) {
-                }
-
-                try {
-                    analysis.setMotconsu_resp_id(data1[3].toString());
-
-                } catch (Exception ex) {
-                }
+                    } catch (Exception ex) {
+                    }
 
 //            try {
 //                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
@@ -241,10 +360,13 @@ public class UptakeController {
 //
 //            } catch (Exception ex) {}
 //
+                }
+//                uptakeByCode.removeIf(n -> (n.getEmc().equals(analysis.getEmc())&&n.getCode().equals(analysis.getCode())));
+                uptakeByCode.add(analysis);
+                chekByCode.add(analysis);
+//        chek.add(analysis.getCode());
+
             }
-        uptakeByCode.add(analysis);
-        chek.add(analysis.getCode());
-        }
 
 
 //           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
@@ -255,12 +377,11 @@ public class UptakeController {
 //    @PostMapping(value = "/chek")
     public String chekAnalysis () throws SQLException {
 
-        chek.add("3856");
+//        chek.add("3856");
         List<Object[]> data = new ArrayList<>();
-        for (String upt: chek) {
+        for (Analysis upt: chekByCode) {
 
-            Analysis analysis = new Analysis();
-        data = uptakeService.getData(" ",upt);
+        data = uptakeService.chek(" ",upt.getCode());
 //		System.out.println(data.size());
 //        try {
 //            Object[] data1 = data
@@ -278,65 +399,35 @@ public class UptakeController {
 //                    + "" + data1[10]
 //            );
             try {
-                analysis.setEmc(data1[0].toString());
-                analysis.setFio(data1[1].toString());
+                if (data1[1].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
+                    upt.setHiv("1");
+                    if (data1[0] != null ) {upt.setResultHiv(data1[0].toString());}
+                }
+                if (data1[1].toString().equals("HBsAg")){
+                    upt.setHbsAg("1");
+                    if (data1[0] != null) {upt.setResultHbsAg(data1[0].toString());}
+                }
 
+                if (data1[1].toString().equals("Ат .к. HCV")){
+                    upt.setAtHCV("1");
+                    if (data1[0] != null) {upt.setResultatHCV(data1[0].toString());}
 
-                analysis.setMain_org_id(data1[5].toString());
-                analysis.setLabel(data1[6].toString());
-                analysis.setPatdirect_id(data1[7].toString());
-                analysis.setDate_bio(data1[8].toString());
-                analysis.setCode(data1[10].toString());
+                }
 
-
-
-
-                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
-                    analysis.setHiv("1");
-                    if (data1[4] != null) {analysis.setResultHiv(data1[4].toString());}
-                }  else { if (analysis.getHiv() == null)
-                    analysis.setHiv("");}
-
-                if (data1[9].toString().equals("HBsAg")){
-                    analysis.setHbsAg("1");
-                    if (data1[4] != null) {analysis.setResultHbsAg(data1[4].toString());}
-                } else { if (analysis.getHbsAg() == null)
-                    analysis.setHbsAg("");}
-
-                if (data1[9].toString().equals("Ат .к. HCV")){
-                    analysis.setAtHCV("1");
-                    if (data1[4] != null) {analysis.setResultatHCV(data1[4].toString());}
-
-                } else { if (analysis.getAtHCV() == null)
-                    analysis.setAtHCV("");}
-
-                if (data1[9].toString().equals("Сифилис МРП")) {
-                    analysis.setSyphMRP("1");
-                    if (data1[4] != null) {analysis.setResultMRP(data1[4].toString());}
-                } else { if (analysis.getSyphMRP() == null)
-                    analysis.setSyphMRP("");}
-                if (data1[9].toString().equals("Syphilis ИФА")) {
-                    analysis.setSyphIFA("1");
-                    if (data1[4] != null) {analysis.setResultSyphIfa(data1[4].toString());}
-                } else { if (analysis.getSyphIFA() == null)
-                    analysis.setSyphIFA("");}
-
+                if (data1[1].toString().equals("Сифилис МРП")) {
+                    upt.setSyphMRP("1");
+                    if (data1[0] != null) {upt.setResultMRP(data1[0].toString());}
+                    else {upt.setResultMRP("");}
+                }
+                if (data1[1].toString().equals("Syphilis ИФА")) {
+                    upt.setSyphIFA("1");
+                    if (data1[0] != null) {upt.setResultSyphIfa(data1[0].toString());}
+                    else {upt.setResultSyphIfa("");}
+                }
+                System.out.println(Arrays.toString(data1));
 
             } catch (Exception ignored) {}
 
-            try {
-                if (data1[2] != null) {
-                    analysis.setKontengent(data1[2].toString());
-                } else {analysis.setKontengent(" ");}
-            } catch (Exception ex) {}
-
-            try {
-                analysis.setMotconsu_resp_id(data1[3].toString());
-
-            } catch (Exception ex) {}
-
-//            try {
-//                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
 //                analysis.setResultHiv(data1[4].toString());
 //
 //            } catch (Exception ex) {}
@@ -346,7 +437,14 @@ public class UptakeController {
 //        System.out.println(analysis);
 //        System.out.println(data.size());
 
-            chekByCode.add(analysis);
+//            chekByCode.add(upt);
+//            System.out.println(upt.chekHiv());
+//            System.out.println(upt.chekatHCV());
+//            System.out.println(upt.chekHbs());
+//            System.out.println(upt.chekSyphIfa());
+//            System.out.println(upt.chek());
+//            System.out.println(upt.totalChek());
+            System.out.println(upt);
 
         }
 

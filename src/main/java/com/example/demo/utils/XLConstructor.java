@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.awt.Desktop;
 
 
 @Component
@@ -43,6 +44,9 @@ public class XLConstructor {
         File template = new File("C:/Repo/template.xlsx");
         File desc = new File("C:/Repo/descriptor.xml");
         XML2Spreadsheet.process(data, desc, template, false, output);
+
+//        Runtime rt = Runtime.getRuntime();
+//        rt.exec("Excel2013 C:/Repo/report.xlsx");
 
     }
     private static void writeDocument(Document document)

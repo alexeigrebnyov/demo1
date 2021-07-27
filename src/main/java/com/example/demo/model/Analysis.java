@@ -238,24 +238,59 @@ public class Analysis {
                 '}';
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Analysis analysis = (Analysis) o;
+//        return Objects.equals(getEmc(), analysis.getEmc()) &&
+//                Objects.equals(getFio(), analysis.getFio()) &&
+//                Objects.equals(getKontengent(), analysis.getKontengent()) &&
+//                Objects.equals(getMotconsu_resp_id(), analysis.getMotconsu_resp_id()) &&
+//                Objects.equals(getResultHiv(), analysis.getResultHiv()) &&
+//                Objects.equals(getResultHbsAg(), analysis.getResultHbsAg()) &&
+//                Objects.equals(getResultatHCV(), analysis.getResultatHCV()) &&
+//                Objects.equals(getResultSyphIfa(), analysis.getResultSyphIfa()) &&
+//                Objects.equals(getResultMRP(), analysis.getResultMRP()) &&
+//                Objects.equals(getMain_org_id(), analysis.getMain_org_id()) &&
+//                Objects.equals(getLabel(), analysis.getLabel()) &&
+//                Objects.equals(getPatdirect_id(), analysis.getPatdirect_id()) &&
+//                Objects.equals(getDate_bio(), analysis.getDate_bio()) &&
+//                Objects.equals(getHiv(), analysis.getHiv()) &&
+//                Objects.equals(getHbsAg(), analysis.getHbsAg()) &&
+//                Objects.equals(getAtHCV(), analysis.getAtHCV()) &&
+//                Objects.equals(getSyphIFA(), analysis.getSyphIFA()) &&
+//                Objects.equals(getSyphMRP(), analysis.getSyphMRP()) &&
+//                Objects.equals(getCode(), analysis.getCode());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getEmc(), getFio(), getKontengent(), getMotconsu_resp_id(), getResultHiv(), getResultHbsAg(), getResultatHCV(), getResultSyphIfa(), getResultMRP(), getMain_org_id(), getLabel(), getPatdirect_id(), getDate_bio(), getHiv(), getHbsAg(), getAtHCV(), getSyphIFA(), getSyphMRP(), getCode());
+//    }
+
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Analysis analysis = (Analysis) o;
+//        return Objects.equals(getEmc(), analysis.getEmc()) &&
+//                Objects.equals(getCode(), analysis.getCode());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getEmc(), getCode());
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Analysis analysis = (Analysis) o;
         return Objects.equals(getEmc(), analysis.getEmc()) &&
-                Objects.equals(getFio(), analysis.getFio()) &&
-                Objects.equals(getKontengent(), analysis.getKontengent()) &&
-                Objects.equals(getMotconsu_resp_id(), analysis.getMotconsu_resp_id()) &&
-                Objects.equals(getResultHiv(), analysis.getResultHiv()) &&
-                Objects.equals(getResultHbsAg(), analysis.getResultHbsAg()) &&
-                Objects.equals(getResultatHCV(), analysis.getResultatHCV()) &&
-                Objects.equals(getResultSyphIfa(), analysis.getResultSyphIfa()) &&
-                Objects.equals(getResultMRP(), analysis.getResultMRP()) &&
-                Objects.equals(getMain_org_id(), analysis.getMain_org_id()) &&
-                Objects.equals(getLabel(), analysis.getLabel()) &&
-                Objects.equals(getPatdirect_id(), analysis.getPatdirect_id()) &&
-                Objects.equals(getDate_bio(), analysis.getDate_bio()) &&
                 Objects.equals(getHiv(), analysis.getHiv()) &&
                 Objects.equals(getHbsAg(), analysis.getHbsAg()) &&
                 Objects.equals(getAtHCV(), analysis.getAtHCV()) &&
@@ -266,41 +301,41 @@ public class Analysis {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEmc(), getFio(), getKontengent(), getMotconsu_resp_id(), getResultHiv(), getResultHbsAg(), getResultatHCV(), getResultSyphIfa(), getResultMRP(), getMain_org_id(), getLabel(), getPatdirect_id(), getDate_bio(), getHiv(), getHbsAg(), getAtHCV(), getSyphIFA(), getSyphMRP(), getCode());
+        return Objects.hash(getEmc(), getHiv(), getHbsAg(), getAtHCV(), getSyphIFA(), getSyphMRP(), getCode());
     }
 
     public boolean chekHiv() {
         if (hiv.equals("1")){
         try {
-            return resultHiv != null;
+            return !resultHiv.equals("");
         } catch (Exception ex) {return  false;}}
        return true;
     }
     public boolean chekHbs() {
         if (hbsAg.equals("1")){
         try {
-            return resultHbsAg != null;
+            return !resultHbsAg.equals("");
         } catch (Exception ex) {return  false;}}
        return true;
     }
     public boolean chekatHCV() {
         if (atHCV.equals("1")){
         try {
-            return resultatHCV != null;
+            return !resultatHCV.equals("");
         } catch (Exception ex) {return false;}}
        return true;
     }
     public boolean chekSyphIfa() {
         if (syphIFA.equals("1")){
         try {
-            return resultSyphIfa != null;
+            return !resultSyphIfa.equals("");
         } catch (Exception ex) {return  false;}}
         return true;
     }
     public boolean chek() {
         if (syphMRP.equals("1")) {
             try {
-                return resultMRP != null;
+                return !resultMRP.equals("");
             } catch (Exception ex) {return false;}
         }
         return true;

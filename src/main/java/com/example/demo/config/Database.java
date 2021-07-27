@@ -49,7 +49,6 @@ public class Database {
 @Bean
 public DataSource getDataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
     return dataSource;
 }
 public Connection getConnection() throws SQLException {
