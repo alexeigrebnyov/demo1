@@ -6,6 +6,8 @@ import com.example.demo.model.Role;
 import com.example.demo.model.UptakeReport;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class UptakeDaoImpl implements UptakeDao {
     Database database = new Database();
 
     EntityManager entityManager;
+    PasswordEncoder passwordEncoder;
     List<User> users = new ArrayList<>();
     Set<Role> roles =  new HashSet<>();
 
@@ -33,6 +36,8 @@ public class UptakeDaoImpl implements UptakeDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    @Autowired
+    public void setPasswordEncoder(@Lazy PasswordEncoder passwordEncoder) {this.passwordEncoder = passwordEncoder;}
     @Transactional
     @Override
     public List<UptakeReport> getAll() {
@@ -262,11 +267,35 @@ public class UptakeDaoImpl implements UptakeDao {
         }
         return objects;
     }
+    public Object[] getCredentials(String s) throws SQLException {
+
+        Connection connection = database.getConnection();
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery("select name, password_hash\n" +
+                "from sys.sql_logins\n" +
+                "where name =" +s);
+
+         return new Object[] {
+                 resultSet.getObject(1),
+                 resultSet.getObject(2)
+         };
+    }
+    public void registerUser(User user){
+
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+
+    }
 
     @Override
     public User loadUserByUsername(String s) {
+
         roles.add(new Role("USER"));
-        users.add(new User("grebnev_a", "1072005", roles));
+        User user = new User("grebnev_a", "1072005", roles);
+        registerUser(user);
+
+        users.add(user);
         return users
                 .stream()
                 .filter(n -> n.getName().equals(s)).findFirst().get();

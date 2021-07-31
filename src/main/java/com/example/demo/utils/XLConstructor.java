@@ -39,14 +39,21 @@ public class XLConstructor {
 
     public static void xml2XLSX() throws IOException, XML2SpreadSheetError {
         FileInputStream data = new FileInputStream("C:/Repo/Report1.xml");
-        File out = new File("C:/Repo/report.xlsx");
+        File out = new File("C:/Users/alexei/report.xlsx");
         FileOutputStream output = new FileOutputStream(out);
         File template = new File("C:/Repo/template.xlsx");
         File desc = new File("C:/Repo/descriptor.xml");
         XML2Spreadsheet.process(data, desc, template, false, output);
+        DesktopApi.open(out);
 
-//        Runtime rt = Runtime.getRuntime();
-//        rt.exec("Excel2013 C:/Repo/report.xlsx");
+
+//         final String EXPLORER_EXE = "explorer.exe";
+//
+//        final String command = EXPLORER_EXE + " /SELECT,\"" + out + "\"";
+//        Runtime.getRuntime().exec(command);
+
+//       Runtime rt = Runtime.getRuntime();
+//      rt.exec(".\\report.xlsx");
 
     }
     private static void writeDocument(Document document)
@@ -90,11 +97,23 @@ public class XLConstructor {
             columnnumber.setAttribute("data", "ВИЧ");
             Element columnresult = doc.createElement("column");
             columnresult.setAttribute("data", "HBsAg");
+            Element columnHCV = doc.createElement("column");
+            columnHCV.setAttribute("data", "anti-HCV");
+            Element columnIfa = doc.createElement("column");
+            columnIfa.setAttribute("data", "SyphIFA");
+            Element columnMRP = doc.createElement("column");
+            columnMRP.setAttribute("data", "MRP");
+            Element columnKont = doc.createElement("column");
+            columnKont.setAttribute("data", "Контенгент");
             e_root.appendChild(columnId);
             e_root.appendChild(columnpatientId);
             e_root.appendChild(columnuptakeCod);
             e_root.appendChild(columnnumber);
             e_root.appendChild(columnresult);
+            e_root.appendChild(columnHCV);
+            e_root.appendChild(columnIfa);
+            e_root.appendChild(columnMRP);
+            e_root.appendChild(columnKont);
             doc.appendChild(e_root);
 //			if (posts.size() == 0)
 //				return;
@@ -104,24 +123,54 @@ public class XLConstructor {
 //                    .stream().map(Analysis::getHiv)
 //                    .collect(Collectors.toList());
             int hivIterator = 1;
-            int hivCount = (int) users
+            int hbsIterator=1;
+            int hcvIterator=1;
+            int ifaIterator = 1;
+            int mrpIterator = 1;
+            int count116F = (int) users
                     .stream()
                     .filter(e -> e.getKontengent().equals("116 б"))
                     .filter(e ->e.getSex().equals("1"))
                     .count();
-            int hbsIterator=1;
-            int hbsCount = (int) users
+
+            int count116M = (int) users
                     .stream()
                     .filter(e -> (e.getKontengent().equals("116 б")&& e.getSex().equals("0")))
                     .count();
-            int hcvIterator=1;
-//            int hcvCount = (int) users
-//                    .stream()
-//                    .filter(e -> e.getAtHCV().equals("1"))
-//                    .count();
-            int ifaIterator = 1;
+
+            int count109a = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("109.а"))
+                    .count();
+            int count109b = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("109.б"))
+                    .count();
+            int count110 = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("110"))
+                    .count();
+            int count108 = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("108.б"))
+                    .count();
+            int count132F = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("132.б")&& e.getSex().equals("1"))
+                    .count();
+            int count132M = (int) users
+                    .stream()
+                    .filter(e -> e.getKontengent().equals("132.б")&& e.getSex().equals("0"))
+                    .count();
+
             int iterator116f = 0;
             int iterator116m = 0;
+            int iterator109a = 0;
+            int iterator109b = 0;
+            int iterator110 = 0;
+            int iterator108b = 0;
+            int iterator132bF = 0;
+            int iterator132bM = 0;
             for (Analysis hiv : users) {
 //                int hivNumber = hivCount - (hivCount-hivIterator);
 //                int hbsNumber = hbsCount - (hbsCount-hbsIterator);
@@ -155,23 +204,57 @@ public class XLConstructor {
                     ifa.setAttribute("value", String.valueOf(ifaIterator));
                     ifaIterator++;
                 } else {ifa.setAttribute("value", "");}
-                Element kont116F = doc.createElement("data");
+
+                Element mrp = doc.createElement("data");
+                if (hiv.getSyphMRP().equals("1")) {
+                    mrp.setAttribute("value", String.valueOf(mrpIterator));
+                    mrpIterator++;
+                } else {mrp.setAttribute("value", "");}
+
+                Element kont = doc.createElement("data");
                 if (iterator116f <1) {
-                    kont116F.setAttribute("value", String.valueOf(hivCount));
+                    kont.setAttribute("value", "116 б F - " + count116F);
                     iterator116f++;
-                }else if (iterator116m<1) {kont116F.setAttribute("value", String.valueOf(hbsCount));
+                }else if (iterator116m<1) {kont.setAttribute("value", "116 б M - " + count116M);
                 iterator116m++;
-                }
+                } else
+                    if (iterator109a<1) {
+                        kont.setAttribute("value", "109.a - " + count109a);
+                        iterator109a++;
+                    } else
+                    if (iterator109b<1) {
+                        kont.setAttribute("value", "109.б - " + count109b);
+                        iterator109b++;
+                    } else
+                    if (iterator110<1) {
+                        kont.setAttribute("value", "110 - " + count110);
+                        iterator110++;
+                    }else
+                    if (iterator108b<1) {
+                        kont.setAttribute("value", "108.б - " + count108);
+                        iterator108b++;
+
+                    }else
+                    if (iterator132bF<1) {
+                        kont.setAttribute("value", "132.бF - " + count132F);
+                        iterator132bF++;
+                    }else
+                    if (iterator132bM<1) {
+                        kont.setAttribute("value", "132.бM - " + count132M);
+                        iterator132bM++;
+                    }
 
 
-                item.appendChild(id);
+
+                        item.appendChild(id);
                 item.appendChild(patientid);
                 item.appendChild(uptakeCod);
                 item.appendChild(number);
                 item.appendChild(result);
                 item.appendChild(hcv);
                 item.appendChild(ifa);
-                item.appendChild(kont116F);
+                item.appendChild(mrp);
+                item.appendChild(kont);
 
                 e_root.appendChild (item);
 

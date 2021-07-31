@@ -15,7 +15,7 @@
 </head>
 <body>
 <div>
-    <div class="row" style="height: 100vh">
+    <div class="row rowColor">
 
         <nav class="nav col-md-12" >
             <a class="nav-link" th:href="@{/}">Главная</a>
@@ -39,6 +39,11 @@
                         <div>
                             <div class="bg-white">
                                 <br>
+                                <div class="float-right">
+                                <form name="refershForm" id="refrehForm" th:action="@{/refresh}" method="post">
+                                    <input type="submit" class="btn btn-danger" value="Завершить работу">
+                                </form>
+                            </div>
 <!--                                <div>-->
 <!--                                    <form name="refresh" id="refresh" th:action="@{/scan}" method="post">-->
 <!--                                        <input type="text" name="zValue" id="zValue" th:value="*{z}">-->

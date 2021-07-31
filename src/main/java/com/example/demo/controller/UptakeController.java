@@ -19,6 +19,7 @@ import ru.curs.xylophone.XML2SpreadSheetError;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -36,10 +38,12 @@ public class UptakeController {
 
     ContService contService;
     UptakeService uptakeService;
-    XLConstructor xlConstructor;
+//    XLConstructor xlConstructor;
 //    BCScaner bcScaner;
     List<Contingent> uptake = new ArrayList<>();
     List<Analysis> uptakeByCode = new ArrayList<>();
+//    List<Analysis> distinct = uptakeByCode
+//            .stream().distinct().collect(Collectors.toList());
     List<Analysis> chekByCode = new ArrayList<>();
     List<String> chek = new ArrayList<>();
 
@@ -64,7 +68,9 @@ public class UptakeController {
 //            return  "contingent";
 //    }
     @PostMapping(value = "/scan")
-    public String getScan() {
+    public String getScan(@RequestParam(value = "code") String code) {
+        setCode(code);
+        System.out.println(code);
         return "redirect:/code";
     }
 
@@ -86,25 +92,14 @@ public class UptakeController {
                 .distinct()
                 .collect(Collectors.toList());
 
-//        if (Test.data != null) {
-//            Scanner scanner = new Scanner(Test.data);
-//            while (scanner.hasNextInt()) {
-//                uptakeByCode.add(contService.getByCode(scanner.nextInt()));
-//            }
-//            uptakeByCode.add(contService.getByCode(Integer.parseInt(Test.data.trim())));
-//            model.addAttribute("code", Test.data);
-//        }
         model.addAttribute("data1", code);
         model.addAttribute("selected", dist);
-//        System.out.println(code);
-//        dist.forEach(System.out::println);
         return "byCode";
     }
     @GetMapping(value = "/chek")
     public String getCheked (ModelMap model) throws SQLException {
-//        if (chekByCode.size()!=0) {chekByCode.clear();}
         chekAnalysis();
-        List<Analysis> dist = chekByCode
+        List<Analysis> dist = uptakeByCode
                 .stream()
                 .distinct()
                 .collect(Collectors.toList());
@@ -117,118 +112,6 @@ public class UptakeController {
     public String refresh() throws SQLException {
 
         if (uptakeByCode.size()!=0) {uptakeByCode.clear();}
-        for (String ch: chek) {
-
-            Analysis analysis = new Analysis();
-            List<Object[]> data = new ArrayList<>();
-            data = uptakeService.getData("and PATDIREC.QUANTITY_DONE=0\n", ch);
-//        try {
-//            Object[] data1 = data
-//                    .stream()
-//                    .findAny().get();
-//
-//
-//        } catch (Exception ignored) {}
-
-            if (data.size() != 0) {
-                for (Object[] data1 : data) {
-//            System.out.println(data1[0] + " " + data1[1] + " " + data1[2] + " " + data1[3] + " " + data1[4] + " "
-//                    + data1[5] + data1[6] + " " + data1[7] + " " + data1[8] + " " + data1[9]
-//                    + "" + data1[10]
-//            );
-                    try {
-                        analysis.setEmc(data1[0].toString());
-                        analysis.setFio(data1[1].toString());
-
-
-                        analysis.setMain_org_id(data1[5].toString());
-                        analysis.setLabel(data1[6].toString());
-                        analysis.setPatdirect_id(data1[7].toString());
-                        analysis.setDate_bio(data1[8].toString());
-                        analysis.setCode(data1[10].toString());
-                        analysis.setSex(data1[11].toString());
-
-
-                        if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г")) {
-                            analysis.setHiv("1");
-                            if (data1[4] != null) {
-                                analysis.setResultHiv(data1[4].toString());
-                            }
-                        } else {
-                            if (analysis.getHiv() == null)
-                                analysis.setHiv("");
-                        }
-                        if (data1[9].toString().equals("HBsAg")) {
-                            analysis.setHbsAg("1");
-                            if (data1[4] != null) {
-                                analysis.setResultHbsAg(data1[4].toString());
-                            }
-                        } else {
-                            if (analysis.getHbsAg() == null)
-                                analysis.setHbsAg("");
-                        }
-                        if (data1[9].toString().equals("Ат .к. HCV")) {
-                            analysis.setAtHCV("1");
-                            if (data1[4] != null) {
-                                analysis.setResultatHCV(data1[4].toString());
-                            }
-                        } else {
-                            if (analysis.getAtHCV() == null)
-                                analysis.setAtHCV("");
-                        }
-                        if (data1[9].toString().equals("Сифилис МРП")) {
-                            analysis.setSyphMRP("1");
-                            if (data1[4] != null) {
-                                analysis.setResultMRP(data1[4].toString());
-                            }
-                        } else {
-                            if (analysis.getSyphMRP() == null)
-                                analysis.setSyphMRP("");
-                        }
-                        if (data1[9].toString().equals("Syphilis ИФА")) {
-                            analysis.setSyphIFA("1");
-                            if (data1[4] != null) {
-                                analysis.setResultSyphIfa(data1[4].toString());
-                            }
-                        } else {
-                            if (analysis.getSyphIFA() == null)
-                                analysis.setSyphIFA("");
-                        }
-
-
-                    } catch (Exception ignored) {
-                    }
-
-                    try {
-                        analysis.setKontengent(data1[2].toString());
-                    } catch (Exception ex) {
-                        analysis.setKontengent("");
-                    }
-
-                    try {
-                        analysis.setMotconsu_resp_id(data1[3].toString());
-
-                    } catch (Exception ex) {
-                    }
-
-//            try {
-//                if (data1[9].toString().equals("А/т к ВИЧ 1,2 +А/г"))
-//                analysis.setResultHiv(data1[4].toString());
-//
-//            } catch (Exception ex) {}
-//
-                }
-//                uptakeByCode.removeIf(n -> (n.getEmc().equals(analysis.getEmc())&&n.getCode().equals(analysis.getCode())));
-                uptakeByCode.add(analysis);
-//        chek.add(analysis.getCode());
-
-            }
-        }
-
-
-//           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
-//        model.addAttribute("selected", uptakeByCode);
-//        code = null;
         return "redirect:/code";
     }
     @PostMapping(value = "/write")
@@ -237,12 +120,37 @@ public class UptakeController {
                 .stream()
                 .distinct()
                 .collect(Collectors.toList());
-        try(FileOutputStream fos=new FileOutputStream("C:/Repo/HIVList.txt", true);) {
+
+        deleteAllFilesFolder("C:/Lists");
+        try(
+                FileOutputStream fos=new FileOutputStream("C:/Lists/HIVList.txt", true);
+                FileOutputStream fosB=new FileOutputStream("C:/Lists/HBsList.txt", true);
+                FileOutputStream fosC=new FileOutputStream("C:/Lists/HCVList.txt", true);
+                FileOutputStream fosSyf=new FileOutputStream("C:/Lists/SyfList.txt", true);
+                FileOutputStream fosMRP=new FileOutputStream("C:/Lists/MRPList.txt", true);
+                ) {
             for (Analysis data:
                     dist) {
                 if (data.getHiv().equals("1")) {
                     String item = data.getEmc()+ System.lineSeparator();
                     fos.write(item.getBytes());
+                }
+                if (data.getHbsAg().equals("1")) {
+                    String item = data.getEmc()+ System.lineSeparator();
+
+                    fosB.write(item.getBytes());
+                }
+                if (data.getAtHCV().equals("1")) {
+                    String item = data.getEmc()+ System.lineSeparator();
+                    fosC.write(item.getBytes());
+                }
+                if (data.getSyphIFA().equals("1")) {
+                    String item = data.getEmc()+ System.lineSeparator();
+                    fosSyf.write(item.getBytes());
+                }
+                if (data.getSyphMRP().equals("1")) {
+                    String item = data.getEmc()+" "+ "-"+ System.lineSeparator();
+                    fosMRP.write(item.getBytes());
                 }
 
             }
@@ -250,9 +158,8 @@ public class UptakeController {
             System.out.println(ex.getMessage());
         }
         XLConstructor.writeXML();
-        xlConstructor.xml2XLSX();
+        XLConstructor.xml2XLSX();
 
-//        uptakeByCode.clear();
         return "redirect:/code";
 
 
@@ -260,7 +167,7 @@ public class UptakeController {
 
     @PostMapping(value = "/code")
     public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
-        chek.add(codeInt);
+//        chek.add(codeInt);
 
             Analysis analysis = new Analysis();
             List<Object[]> data = new ArrayList<>();
@@ -363,7 +270,7 @@ public class UptakeController {
                 }
 //                uptakeByCode.removeIf(n -> (n.getEmc().equals(analysis.getEmc())&&n.getCode().equals(analysis.getCode())));
                 uptakeByCode.add(analysis);
-                chekByCode.add(analysis);
+//                chekByCode.add(analysis);
 //        chek.add(analysis.getCode());
 
             }
@@ -376,10 +283,13 @@ public class UptakeController {
     }
 //    @PostMapping(value = "/chek")
     public String chekAnalysis () throws SQLException {
-
+//        List<Analysis> dist = uptakeByCode
+//                .stream()
+//                .distinct()
+//                .collect(Collectors.toList());
 //        chek.add("3856");
         List<Object[]> data = new ArrayList<>();
-        for (Analysis upt: chekByCode) {
+        for (Analysis upt:uptakeByCode) {
 
         data = uptakeService.chek(" ",upt.getCode());
 //		System.out.println(data.size());
@@ -424,7 +334,7 @@ public class UptakeController {
                     if (data1[0] != null) {upt.setResultSyphIfa(data1[0].toString());}
                     else {upt.setResultSyphIfa("");}
                 }
-                System.out.println(Arrays.toString(data1));
+//                System.out.println(Arrays.toString(data1));
 
             } catch (Exception ignored) {}
 
@@ -444,7 +354,7 @@ public class UptakeController {
 //            System.out.println(upt.chekSyphIfa());
 //            System.out.println(upt.chek());
 //            System.out.println(upt.totalChek());
-            System.out.println(upt);
+//            System.out.println(upt);
 
         }
 
@@ -464,6 +374,9 @@ public class UptakeController {
                 .distinct()
                 .collect(Collectors.toList());
     }
-    //    public  String getByCode();
-//
+
+    public static void deleteAllFilesFolder(String path) {
+        for (File myFile : Objects.requireNonNull(new File(path).listFiles()))
+            if (myFile.isFile()) myFile.delete();
+    }
 }
