@@ -24,8 +24,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -74,17 +79,18 @@ public class UptakeController {
         return "redirect:/code";
     }
 
-    @PostMapping(value = "/code/init")
+    @GetMapping(value = "divrefresh")
     public String redirect(ModelMap modelMap) {
+        modelMap.addAttribute("data1", code);
 
 //        Test.data.forEach(e -> uptakeByCode.add(contService
 //                .getByCode(Integer.parseInt(e.trim()))));
 //        System.out.println(Test.data.size());
-        return "redirect:/code";
+        return "divRefresh";
 
     }
     @GetMapping(value = "/code")
-    public String updateUser1(ModelMap model) {
+    public String updateUser1(ModelMap model)  {
 
     Test.getScan();
         List<Analysis> dist = uptakeByCode
@@ -94,6 +100,7 @@ public class UptakeController {
 
         model.addAttribute("data1", code);
         model.addAttribute("selected", dist);
+//        code="1288";
         return "byCode";
     }
     @GetMapping(value = "/chek")

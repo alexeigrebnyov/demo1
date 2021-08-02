@@ -15,20 +15,20 @@
 </head>
 <body>
 <div id="div_refresh">
-    <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
+    <form name="codeForm" id="codeForm"  method="get">
         <input type="text" name="codeInt" id="codeInt" th:value="*{data1}">
         <!--                                         <input type="submit" value="Отправить">&ndash;&gt;-->
     </form>
 </div>
 
-<script>
-    // let URL = "divRefresh.html"
-    $(document).ready(function () {
-        $( '#codeForm' ).load("/divRefresh.html");
-        setInterval(function () {
-            $( '#div_refresh' ).load("/divRefresh.html");
-        }, 1000)
-    })
-</script>
+<!--<script>-->
+<!--    // let URL = "divRefresh.html"-->
+<!--    $(document).ready(function () {-->
+<!--        $( '#codeForm' ).load("/divRefresh.html");-->
+<!--        setInterval(function () {-->
+<!--            $( '#div_refresh' ).load("/divRefresh.html");-->
+<!--        }, 1000)-->
+<!--    })-->
+<!--</script>-->
 </body>
 </html>

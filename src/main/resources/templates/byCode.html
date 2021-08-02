@@ -9,7 +9,7 @@
     <!-- JavaScript Bundle with Popper.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <link rel="icon" href="spring_leaf_plant_nature_leaves_garden_environment_icon_133309.ico">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <!--    <meta http-equiv="refresh" content="1">-->
     <title>Title</title>
 </head>
@@ -129,21 +129,37 @@
 </div>
 </div>
 </div>
+
+<script>
+    // let URL = "divRefresh.html"
+    function show()
+    {
+        $.ajax({
+            url: "divRefresh.html",
+            cache: false,
+            success: function(html){
+                $("#div_refresh").html(html);
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        show();
+        setInterval('show()',1000);
+    });
+    // $(document).ready(function () {
+    //    $( '#div_refresh' ).load(document.URL+ '#div_refresh');
+    //    setInterval(function () {
+    //        $( '#div_refresh' ).load(document.URL+ '#div_refresh');
+    //    }, 1000)
+    // })
+</script>
 <script>
     $( function() {
         if ( $( '#codeInt' ).val() !== '' ) {
             $( '#codeForm' ).submit();
         }
     });
-</script>
-<script>
-    // let URL = "divRefresh.html"
-    $(document).ready(function () {
-       // $( '#div_refresh' ).load(document.URL + '#div_refresh');
-       setInterval(function () {
-           $( '#div_refresh' ).load(document.URL + '#div_refresh');
-       }, 1000)
-    })
 </script>
 </body>
 </html>
