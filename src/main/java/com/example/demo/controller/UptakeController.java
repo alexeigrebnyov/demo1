@@ -100,7 +100,7 @@ public class UptakeController {
 
         model.addAttribute("data1", code);
         model.addAttribute("selected", dist);
-//        code="1288";
+//        code="1529";
         return "byCode";
     }
     @GetMapping(value = "/chek")
@@ -257,6 +257,7 @@ public class UptakeController {
                     }
 
                     try {
+                        if (data1[2] != null)
                         analysis.setKontengent(data1[2].toString());
                     } catch (Exception ex) {
                         analysis.setKontengent("");
