@@ -53,6 +53,8 @@ public class UptakeController {
     List<String> chek = new ArrayList<>();
 
     String code;
+    String redirect = "redirect:/code";
+    String redirmanual = "redirect:/divrefresh";
 
     @Autowired
     public UptakeController(ContService contService,
@@ -79,9 +81,15 @@ public class UptakeController {
         return "redirect:/code";
     }
 
-    @GetMapping(value = "divrefresh")
+    @GetMapping(value = "/divrefresh")
     public String redirect(ModelMap modelMap) {
+        List<Analysis> dist = uptakeByCode
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
         modelMap.addAttribute("data1", code);
+        modelMap.addAttribute("redir1", redirmanual);
+        modelMap.addAttribute("selected1", dist);
 
 //        Test.data.forEach(e -> uptakeByCode.add(contService
 //                .getByCode(Integer.parseInt(e.trim()))));
@@ -89,6 +97,12 @@ public class UptakeController {
         return "divRefresh";
 
     }
+//    @GetMapping(value = "/code/codeInt")
+//    public String updateInput(ModelMap modelMap) {
+//        modelMap.addAttribute("data1", code);
+//        return "byCode";
+//
+//    }
     @GetMapping(value = "/code")
     public String updateUser1(ModelMap model)  {
 
@@ -100,7 +114,7 @@ public class UptakeController {
 
         model.addAttribute("data1", code);
         model.addAttribute("selected", dist);
-//        code="1529";
+        model.addAttribute("redir", redirect);
         return "byCode";
     }
     @GetMapping(value = "/chek")
@@ -173,7 +187,8 @@ public class UptakeController {
     }
 
     @PostMapping(value = "/code")
-    public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt) throws SQLException {
+    public String updateUser(ModelMap model, @RequestParam(value = "codeInt") String codeInt,
+                             @RequestParam(value ="redir") String redir) throws SQLException {
 //        chek.add(codeInt);
 
             Analysis analysis = new Analysis();
@@ -287,7 +302,7 @@ public class UptakeController {
 //           uptakeByCode.add(contService.getByCode(Integer.parseInt(codeInt.trim())));
 //        model.addAttribute("selected", uptakeByCode);
        code = null;
-        return "redirect:/code";
+        return redir;
     }
 //    @PostMapping(value = "/chek")
     public String chekAnalysis () throws SQLException {

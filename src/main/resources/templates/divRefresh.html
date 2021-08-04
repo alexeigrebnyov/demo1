@@ -9,26 +9,156 @@
     <!-- JavaScript Bundle with Popper.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <link rel="icon" href="spring_leaf_plant_nature_leaves_garden_environment_icon_133309.ico">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <!--    <meta http-equiv="refresh" content="1">-->
     <title>Title</title>
 </head>
 <body>
+
+
 <div id="div_refresh">
-    <form name="codeForm" id="codeForm"  method="get">
-        <input type="text" name="codeInt" id="codeInt" th:value="*{data1}">
-        <!--                                         <input type="submit" value="Отправить">&ndash;&gt;-->
+    <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
+        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
+        <input type="hidden" name="redir" id="redir" th:value="*{redir1}">
+        <!--                                        <input type="text" name="codeInt" id="codeInt" >-->
+        <!--                                         <input type="submit" value="Отправить">-->
     </form>
+
+    <!--                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">-->
+    <!--                                        <input type="submit" value="Проверить">-->
+    <!--                                    </form>-->
+</div>
+<div>
+    <div class="row rowColor" >
+
+        <nav class="nav col-md-12" >
+            <a class="nav-link" th:href="@{/}">Главная</a>
+            <a class="nav-link" th:href="@{/code}">Забор</a>
+            <a class="nav-link " th:href="@{/chek}" >Результаты</a>
+            <a class="nav-link " href="#" >Ручной ввод</a>
+
+        </nav>
+        <div class="container-fluid" style="background-color: #F8F8FF">
+            <div class="container-fluid">
+                <!--                <h1>Анализы в Казань</h1>-->
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" >ВИЧ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">TORCH</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div>
+                            <!--                            <br>-->
+                            <!--                            <h4>ВИЧ, Геп В, С, СИФ</h4>-->
+                            <div class="float-right">
+                                <form name="writeForm" id="writeForm" th:action="@{/write}" method="post">
+                                    <input type="submit" class="btn btn-primary" value="Сформировать списки">
+                                </form>
+
+                            </div>
+                            <div class="bg-white">
+                                <br>
+                                <div>
+                                    <p><b>Ручной ввод</b></p>
+                                    <form name="refresh" id="refresh" th:action="@{/scan}" method="post" >
+                                        <input type="text" name="code" id="code">
+                                        <input type="submit" value="отправить">
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <table class="table table-striped" border="1">
+                            <tr>
+                                <th>№</th>
+                                <th>ЭМК</th>
+                                <th>ФИО</th>
+                                <th>Дата забора</th>
+                                <th>Код забора</th>
+                                <th>ВИЧ</th>
+                                <th>HBsAg</th>
+                                <th>Anti-HCV</th>
+                                <th>SyphIFA</th>
+                                <th>МРП</th>
+                                <th>Контенгент</th>
+                                <th>Филиал</th>
+                                <!--                                <th>Статус</th>-->
+                            </tr>
+
+                            <th:block th:each = "cont:${selected1}">
+                                <tr>
+                                    <td th:utext="${selected1.indexOf(cont)+1}"></td>
+                                    <td th:utext="${cont.emc}"></td>
+                                    <td th:utext="${cont.fio}"></td>
+                                    <td th:utext="${cont.date_bio}"></td>
+                                    <td th:utext="${cont.code}"></td>
+                                    <td th:utext="${cont.hiv}"></td>
+                                    <td th:utext="${cont.hbsAg}"></td>
+                                    <td th:utext="${cont.atHCV}"></td>
+                                    <td th:utext="${cont.syphIFA}"></td>
+                                    <td th:utext="${cont.syphMRP}"></td>
+                                    <td th:utext="${cont.kontengent}"></td>
+                                    <td th:utext="${cont.label}"></td>
+                                    <!--                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-primary"></td>-->
+
+                                    <!--                                    <td>-->
+                                    <!--                                        <button class="btn btn-danger" type="submit">x</button>-->
+                                    <!--                                    </td>-->
+
+                            </th:block>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div>
+                            <h4>TORCH</h4>
+                            <div class="bg-white">
+                                TORCH uptake data
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
 </div>
 
-<!--<script>-->
-<!--    // let URL = "divRefresh.html"-->
-<!--    $(document).ready(function () {-->
-<!--        $( '#codeForm' ).load("/divRefresh.html");-->
-<!--        setInterval(function () {-->
-<!--            $( '#div_refresh' ).load("/divRefresh.html");-->
-<!--        }, 1000)-->
-<!--    })-->
-<!--</script>-->
+<script>
+    // let URL = "divRefresh.html"
+    // function show()
+    // {
+    //     $.ajax({
+    //         url: "UptakeController.java",
+    //         cache: false,
+    //         success: function(html){
+    //             $("#codeInt").html(html);
+    //         }
+    //     });
+    // }
+    //
+    // $(document).ready(function(){
+    //     show();
+    //     setInterval('show()',1000);
+    // });
+</script>
+<script>
+    $( function() {
+        if ( $( '#codeInt' ).val() !== '' ) {
+            $( '#codeForm' ).submit();
+        }
+    });
+</script>
 </body>
 </html>

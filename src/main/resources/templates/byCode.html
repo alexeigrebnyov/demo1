@@ -14,9 +14,12 @@
     <title>Title</title>
 </head>
 <body>
+
+
 <div id="div_refresh">
     <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
         <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
+        <input type="hidden" name="redir" id="redir" th:value="*{redir}">
         <!--                                        <input type="text" name="codeInt" id="codeInt" >-->
         <!--                                         <input type="submit" value="Отправить">-->
     </form>
@@ -32,6 +35,7 @@
             <a class="nav-link" th:href="@{/}">Главная</a>
             <a class="nav-link active" href="#">Забор</a>
             <a class="nav-link " th:href="@{/chek}" >Результаты</a>
+            <a class="nav-link " th:href="@{/divrefresh}" >Ручной ввод</a>
 
         </nav>
         <div class="container-fluid" style="background-color: #F8F8FF">
@@ -59,13 +63,13 @@
                             </div>
                             <div class="bg-white">
                                 <br>
-                                <div>
-                                    <p><b>Ручной ввод</b></p>
-                                    <form name="refresh" id="refresh" th:action="@{/scan}" method="post" >
-                                        <input type="text" name="code" id="code">
-                                        <input type="submit" value="отправить">
-                                    </form>
-                                </div>
+<!--                                <div>-->
+<!--                                    <p><b>Ручной ввод</b></p>-->
+<!--                                    <form name="refresh" id="refresh" th:action="@{/scan}" method="post" >-->
+<!--                                        <input type="text" name="code" id="code">-->
+<!--                                        <input type="submit" value="отправить">-->
+<!--                                    </form>-->
+<!--                                </div>-->
 
                             </div>
                         </div>
@@ -136,10 +140,10 @@
     // function show()
     // {
     //     $.ajax({
-    //         url: "byCode.html",
+    //         url: "UptakeController.java",
     //         cache: false,
     //         success: function(html){
-    //             $("#div_refresh").html(html);
+    //             $("#codeInt").html(html);
     //         }
     //     });
     // }
@@ -148,12 +152,6 @@
     //     show();
     //     setInterval('show()',1000);
     // });
-    $(document).ready(function () {
-       // $( '#codeForm' ).load(document.URL+ "#codeForm");
-       setInterval(function () {
-           $( '#codeInt' ).load(document.documentURI+ "#codeInt");
-       }, 1000)
-    })
 </script>
 <script>
     $( function() {
