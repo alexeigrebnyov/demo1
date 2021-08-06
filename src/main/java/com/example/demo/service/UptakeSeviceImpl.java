@@ -46,4 +46,9 @@ public class UptakeSeviceImpl implements UptakeService {
 
     }
 
+    @Override
+    public void saveUser(String name, String password, String role) {
+        uptakeDao.saveUser(name, password, role);
+    }
+
 }

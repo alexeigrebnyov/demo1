@@ -18,5 +18,6 @@ public interface UptakeDao {
     List<Object[]> getData(String done,String bio_code) throws SQLException;
     List<Object[]> chek (String done,String bio_code) throws SQLException;
     User loadUserByUsername(String s);
+    void saveUser(String name, String password, String role);
 
 }

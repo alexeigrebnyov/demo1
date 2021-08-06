@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!-- CSS only -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!--    <meta http-equiv="refresh" content="1">-->
+    <title>Title</title>
+</head>
+<body>
+
+
+<div>
+    <div class="row rowColor" >
+
+        <nav class="nav col-md-12" >
+            <a class="nav-link" th:href="@{/}">Главная</a>
+            <a class="nav-link" th:href="@{/code}">Забор</a>
+            <a class="nav-link " th:href="@{/chek}" >Результаты</a>
+            <a class="nav-link " th:href="@{/divrefresh}" >Ручной ввод</a>
+            <a class="nav-link active" href="#">Админ</a>
+
+        </nav>
+        <div class="container-fluid" style="background-color: #F8F8FF">
+            <div class="container-fluid">
+                <!--                <h1>Анализы в Казань</h1>-->
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" >Список ользователей</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">TORCH</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div>
+                            <!--                            <br>-->
+                            <!--                            <h4>ВИЧ, Геп В, С, СИФ</h4>-->
+
+                            <div class="bg-white">
+                                <br>
+                                <!--                                <div>-->
+                                <!--                                    <p><b>Ручной ввод</b></p>-->
+                                <!--                                    <form name="refresh" id="refresh" th:action="@{/scan}" method="post" >-->
+                                <!--                                        <input type="text" name="code" id="code">-->
+                                <!--                                        <input type="submit" value="отправить">-->
+                                <!--                                    </form>-->
+                                <!--                                </div>-->
+
+                            </div>
+                        </div>
+
+<!--                        <table class="table table-striped" border="1">-->
+<!--                            <tr>-->
+<!--                                <th>№</th>-->
+<!--                                <th>ЭМК</th>-->
+<!--                                <th>ФИО</th>-->
+<!--                                <th>Дата забора</th>-->
+<!--                                <th>Код забора</th>-->
+<!--                                <th>ВИЧ</th>-->
+<!--                                <th>HBsAg</th>-->
+<!--                                <th>Anti-HCV</th>-->
+<!--                                <th>SyphIFA</th>-->
+<!--                                <th>МРП</th>-->
+<!--                                <th>Контенгент</th>-->
+<!--                                <th>Филиал</th>-->
+<!--                                &lt;!&ndash;                                <th>Статус</th>&ndash;&gt;-->
+<!--                            </tr>-->
+
+<!--                            <th:block th:each = "cont:${selected}">-->
+<!--                                <tr>-->
+<!--                                    <td th:utext="${selected.indexOf(cont)+1}"></td>-->
+<!--                                    <td th:utext="${cont.emc}"></td>-->
+<!--                                    <td th:utext="${cont.fio}"></td>-->
+<!--                                    <td th:utext="${cont.date_bio}"></td>-->
+<!--                                    <td th:utext="${cont.code}"></td>-->
+<!--                                    <td th:utext="${cont.hiv}"></td>-->
+<!--                                    <td th:utext="${cont.hbsAg}"></td>-->
+<!--                                    <td th:utext="${cont.atHCV}"></td>-->
+<!--                                    <td th:utext="${cont.syphIFA}"></td>-->
+<!--                                    <td th:utext="${cont.syphMRP}"></td>-->
+<!--                                    <td th:utext="${cont.kontengent}"></td>-->
+<!--                                    <td th:utext="${cont.label}"></td>-->
+<!--                                    &lt;!&ndash;                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-primary"></td>&ndash;&gt;-->
+
+<!--                                    &lt;!&ndash;                                    <td>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                        <button class="btn btn-danger" type="submit">x</button>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                    </td>&ndash;&gt;-->
+
+<!--                            </th:block>-->
+
+<!--                            </tr>-->
+<!--                        </table>-->
+                    </div>
+                    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div>
+                            <h4>Новый пользователь</h4>
+                            <div class="bg-white">
+                                <div class="float-right">
+                                    <form name="saveForm" id="saveForm" th:action="@{/saveuser}" method="post">
+
+                                        <input type="text" name="name" id="name">
+                                        <input type="text" name="pass" id="pass">
+                                        <input type="text" name="role" id="role">
+                                        <input type="submit" class="btn btn-primary" value="сохранить">
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

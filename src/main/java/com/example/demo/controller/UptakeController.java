@@ -78,7 +78,7 @@ public class UptakeController {
     public String getScan(@RequestParam(value = "code") String code) {
         setCode(code);
         System.out.println(code);
-        return "redirect:/code";
+        return "redirect:/divrefresh";
     }
 
     @GetMapping(value = "/divrefresh")
@@ -128,6 +128,17 @@ public class UptakeController {
         model.addAttribute("chekedAnalysis", dist);
         return "chek";
 
+    }
+    @GetMapping(value = "/admin")
+    public String adminPage(ModelMap modelMap) {
+        return "admin";
+    }
+    @PostMapping(value = "/saveuser")
+    public String saveUser(@RequestParam(value = "name") String name,
+                           @RequestParam(value = "pass") String password,
+                           @RequestParam(value = "role") String role) {
+        uptakeService.saveUser(name, password, role);
+        return "redirect:/admin";
     }
     @PostMapping(value = "/refresh")
     public String refresh() throws SQLException {

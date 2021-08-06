@@ -16,18 +16,7 @@
 <body>
 
 
-<div id="div_refresh">
-    <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
-        <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
-        <input type="hidden" name="redir" id="redir" th:value="*{redir}">
-        <!--                                        <input type="text" name="codeInt" id="codeInt" >-->
-        <!--                                         <input type="submit" value="Отправить">-->
-    </form>
 
-    <!--                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">-->
-    <!--                                        <input type="submit" value="Проверить">-->
-    <!--                                    </form>-->
-</div>
 <div>
     <div class="row rowColor" >
 
@@ -53,6 +42,18 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div>
+                            <div id="div_refresh">
+                                <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
+                                    <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">
+                                    <input type="hidden" name="redir" id="redir" th:value="*{redir}">
+                                    <!--                                        <input type="text" name="codeInt" id="codeInt" >-->
+                                    <!--                                         <input type="submit" value="Отправить">-->
+                                </form>
+
+                                <!--                                    <form name="chekForm" id="chekForm" th:action="@{/chek}" method="post">-->
+                                <!--                                        <input type="submit" value="Проверить">-->
+                                <!--                                    </form>-->
+                            </div>
 <!--                            <br>-->
 <!--                            <h4>ВИЧ, Геп В, С, СИФ</h4>-->
                             <div class="float-right">

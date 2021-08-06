@@ -10,9 +10,10 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
+<!--	<packaging>war</packaging>-->
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -78,11 +79,6 @@
 			<version>2.11.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>ru.curs</groupId>
 			<artifactId>xylophone</artifactId>
 			<version>6.1.52</version>
@@ -97,9 +93,16 @@
 		</dependency>
 
 	</dependencies>
+	<packaging>war</packaging>
 
 	<build>
+		<finalName>demo</finalName>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-war-plugin</artifactId>-->
+<!--				<version>3.2.2</version>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

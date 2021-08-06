@@ -14,6 +14,7 @@ public interface UptakeService {
     List<Object[]> getData(String done, String bio_code) throws SQLException;
     List<Object[]> chek (String done, String bio_code) throws SQLException;
     void add(UptakeReport uptakeReport);
+    void saveUser(String name, String password, String role);
 
 
 }

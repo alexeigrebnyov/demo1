@@ -27,6 +27,7 @@ import java.util.Set;
 public class UptakeDaoImpl implements UptakeDao {
     Database database = new Database();
 
+
     EntityManager entityManager;
     PasswordEncoder passwordEncoder;
     List<User> users = new ArrayList<>();
@@ -299,6 +300,21 @@ public class UptakeDaoImpl implements UptakeDao {
         return users
                 .stream()
                 .filter(n -> n.getName().equals(s)).findFirst().get();
+    }
+    @Override
+    public void saveUser(String name, String password, String role) {
+        User user = new User(name, password, null);
+        registerUser(user);
+        try {
+            Connection connection = database.getConnection();
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("insert LABOR_USERS (nameUser, passwordUser, roleUser)" +
+                    "VALUES (" + "'" + user.getName() + "'" + ", " + "'" + user.getPassword() + "'" + "," + "'"+ role+ "'" + ")");
+            System.out.println("User с именем –" + name + " добавлен в базу данных");
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 
 

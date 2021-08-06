@@ -67,64 +67,64 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 public class DemoApplication {
 
-	private static HIVService hivService;
-	private static UptakeService uptakeService;
-	private static ContService contService;
-	private static Long i = 1L;
-	private static String[] paths = new String[3];
-	private static DataInit dataInit;
-	private static UptakeController uptakeController;
+//	private static HIVService hivService;
+//	private static UptakeService uptakeService;
+//	private static ContService contService;
+//	private static Long i = 1L;
+//	private static String[] paths = new String[3];
+//	private static DataInit dataInit;
+//	private static UptakeController uptakeController;
 //	private static BarcodeReader barcodeReader;
 
-	@Autowired
-	public DemoApplication(HIVService hivService, UptakeService uptakeService, ContService contService,
-						   DataInit dataInit
-	) {
-
-		this.hivService = hivService;
-		this.uptakeService = uptakeService;
-		this.contService = contService;
-		this.dataInit = dataInit;
-	}
-
-
-
-	private static String[] getPath() {
-		System.out.println("Укажите путь к источнику данных");
-		Scanner pathScanner = new Scanner(System.in);
-		paths[0] = pathScanner.next();
-		paths[1] = pathScanner.next();
-		paths[2] = pathScanner.next();
-		return paths;
-
-	}
+//	@Autowired
+//	public DemoApplication(HIVService hivService, UptakeService uptakeService, ContService contService,
+//						   DataInit dataInit
+//	) {
+//
+//		this.hivService = hivService;
+//		this.uptakeService = uptakeService;
+//		this.contService = contService;
+//		this.dataInit = dataInit;
+//	}
 
 
-	private static void further() {
-		System.out.println("Выберите дальнейшие действия:"
-				+ System.lineSeparator() +
-				"q -выход" + System.lineSeparator() +
-				"указать id пациента" + System.lineSeparator() +
-				"сделать выборку по результату (указать результат)");
-		Scanner scanner = new Scanner(System.in);
 
-//		if (scanner.hasNextInt()) {
-//			System.out.println(hivService.getById((long)scanner.nextInt()));
-//			further();
+//	private static String[] getPath() {
+//		System.out.println("Укажите путь к источнику данных");
+//		Scanner pathScanner = new Scanner(System.in);
+//		paths[0] = pathScanner.next();
+//		paths[1] = pathScanner.next();
+//		paths[2] = pathScanner.next();
+//		return paths;
+//
+//	}
+//
+//
+//	private static void further() {
+//		System.out.println("Выберите дальнейшие действия:"
+//				+ System.lineSeparator() +
+//				"q -выход" + System.lineSeparator() +
+//				"указать id пациента" + System.lineSeparator() +
+//				"сделать выборку по результату (указать результат)");
+//		Scanner scanner = new Scanner(System.in);
+//
+////		if (scanner.hasNextInt()) {
+////			System.out.println(hivService.getById((long)scanner.nextInt()));
+////			further();
+////		}
+////		else { String act = scanner.next();
+////			if (act.equals("q")) {
+////				scanner.close();
+////			}
+////			else {
+////				hivService.allPos(act).forEach(System.out::println);
+////				further();
+////			}
+////		}
+//		if (scanner.next().equals("q")) {
+//			scanner.close();
 //		}
-//		else { String act = scanner.next();
-//			if (act.equals("q")) {
-//				scanner.close();
-//			}
-//			else {
-//				hivService.allPos(act).forEach(System.out::println);
-//				further();
-//			}
-//		}
-		if (scanner.next().equals("q")) {
-			scanner.close();
-		}
-	}
+//	}
 
 	public static void main(String[] args) throws IOException, XML2SpreadSheetError, ParseException, SQLException {
 		SpringApplication.run(DemoApplication.class, args);
