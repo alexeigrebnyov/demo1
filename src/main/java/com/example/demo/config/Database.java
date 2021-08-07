@@ -49,6 +49,10 @@ public class Database {
 @Bean
 public DataSource getDataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    dataSource.setUrl("jdbc:sqlserver://192.168.7.100;database=izhevsk");
+    dataSource.setUsername("sa");
+    dataSource.setPassword("medik17@");
     return dataSource;
 }
 public Connection getConnection() throws SQLException {

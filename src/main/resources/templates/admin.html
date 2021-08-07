@@ -14,7 +14,12 @@
     <title>Title</title>
 </head>
 <body>
-
+<div class="float-right">
+    <table>
+        <tr class="details"> <td th:utext="${user}"> </td></tr>
+    </table>
+    <a th:href="@{/logout}"> Выйти </a>
+</div>
 
 <div>
     <div class="row rowColor" >
@@ -42,6 +47,36 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div>
+                            <div>
+                                <div class="bg-white">
+                                    <div class="float-right">
+                                        <form name="saveForm" id="saveForm" th:action="@{/saveuser}" method="post">
+
+                                            <label for="name">Логин</label>
+                                            <input type="text" name="name" id="name">
+                                            <label for="pass">Пароль</label>
+                                            <input type="password" name="pass" id="pass">
+                                            <!--                                        <input type="text" name="role" id="role">-->
+                                            <label for="role">Роль</label>
+                                            <select name="role" id="role">
+                                                <option >USER</option>
+                                                <option>ADMIN</option>
+                                            </select>
+                                            <input type="submit" class="btn btn-primary" value="Добавить">
+                                        </form>
+                                        <form name="deleteForm" id="deleteForm" th:action="@{/delete}" method="post">
+
+                                            <label for="id">ID</label>
+                                            <input type="text" name="id" id="id">
+                                            <input type="submit" class="btn btn-danger" value="удалить">
+                                        </form>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
                             <!--                            <br>-->
                             <!--                            <h4>ВИЧ, Геп В, С, СИФ</h4>-->
 
@@ -58,64 +93,54 @@
                             </div>
                         </div>
 
-<!--                        <table class="table table-striped" border="1">-->
-<!--                            <tr>-->
-<!--                                <th>№</th>-->
-<!--                                <th>ЭМК</th>-->
-<!--                                <th>ФИО</th>-->
-<!--                                <th>Дата забора</th>-->
-<!--                                <th>Код забора</th>-->
-<!--                                <th>ВИЧ</th>-->
-<!--                                <th>HBsAg</th>-->
-<!--                                <th>Anti-HCV</th>-->
-<!--                                <th>SyphIFA</th>-->
-<!--                                <th>МРП</th>-->
-<!--                                <th>Контенгент</th>-->
-<!--                                <th>Филиал</th>-->
-<!--                                &lt;!&ndash;                                <th>Статус</th>&ndash;&gt;-->
-<!--                            </tr>-->
+                        <table class="table table-striped" border="1">
+                            <tr>
+                                <th>№</th>
+                                <th>Id</th>
+                                <th>Login</th>
+                                <th>Role</th>
+                            </tr>
 
-<!--                            <th:block th:each = "cont:${selected}">-->
-<!--                                <tr>-->
-<!--                                    <td th:utext="${selected.indexOf(cont)+1}"></td>-->
-<!--                                    <td th:utext="${cont.emc}"></td>-->
-<!--                                    <td th:utext="${cont.fio}"></td>-->
-<!--                                    <td th:utext="${cont.date_bio}"></td>-->
-<!--                                    <td th:utext="${cont.code}"></td>-->
-<!--                                    <td th:utext="${cont.hiv}"></td>-->
-<!--                                    <td th:utext="${cont.hbsAg}"></td>-->
-<!--                                    <td th:utext="${cont.atHCV}"></td>-->
-<!--                                    <td th:utext="${cont.syphIFA}"></td>-->
-<!--                                    <td th:utext="${cont.syphMRP}"></td>-->
-<!--                                    <td th:utext="${cont.kontengent}"></td>-->
-<!--                                    <td th:utext="${cont.label}"></td>-->
-<!--                                    &lt;!&ndash;                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-primary"></td>&ndash;&gt;-->
+                            <th:block th:each = "cont:${users}">
+                                <tr>
+                                    <td th:utext="${users.indexOf(cont)+1}"></td>
+                                    <td th:utext="${cont.id}"></td>
+                                    <td th:utext="${cont.name}"></td>
+                                    <td th:utext="${cont.roles}"></td>
+                                    <!--                                    <td th:utext="${cont.totalChek()}" class="font-weight-bold text-primary"></td>-->
 
-<!--                                    &lt;!&ndash;                                    <td>&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                                        <button class="btn btn-danger" type="submit">x</button>&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                                    </td>&ndash;&gt;-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <button class="btn btn-danger" type="submit">x</button>-->
+                                    <!--                                    </td>-->
 
-<!--                            </th:block>-->
+                            </th:block>
 
-<!--                            </tr>-->
-<!--                        </table>-->
+                            </tr>
+                        </table>
                     </div>
                     <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div>
-                            <h4>Новый пользователь</h4>
-                            <div class="bg-white">
-                                <div class="float-right">
-                                    <form name="saveForm" id="saveForm" th:action="@{/saveuser}" method="post">
+<!--                        <div>-->
+<!--                            <h4>Новый пользователь</h4>-->
+<!--                            <div class="bg-white">-->
+<!--                                <div class="float-right">-->
+<!--                                    <form name="saveForm" id="saveForm" th:action="@{/saveuser}" method="post">-->
 
-                                        <input type="text" name="name" id="name">
-                                        <input type="text" name="pass" id="pass">
-                                        <input type="text" name="role" id="role">
-                                        <input type="submit" class="btn btn-primary" value="сохранить">
-                                    </form>
+<!--                                        <label for="name">Логин</label>-->
+<!--                                        <input type="text" name="name" id="name">-->
+<!--                                        <label for="pass">Пароль</label>-->
+<!--                                        <input type="password" name="pass" id="pass">-->
+<!--&lt;!&ndash;                                        <input type="text" name="role" id="role">&ndash;&gt;-->
+<!--                                        <label for="role">Роль</label>-->
+<!--                                        <select name="role" id="role">-->
+<!--                                            <option >USER</option>-->
+<!--                                            <option>ADMIN</option>-->
+<!--                                        </select>-->
+<!--                                        <input type="submit" class="btn btn-primary" value="сохранить">-->
+<!--                                    </form>-->
 
-                                </div>
-                            </div>
-                        </div>
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                 </div>
 

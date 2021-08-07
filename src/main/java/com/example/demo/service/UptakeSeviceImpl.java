@@ -4,6 +4,7 @@ import com.example.demo.dao.HIVDao;
 import com.example.demo.dao.UptakeDao;
 import com.example.demo.model.HIV;
 import com.example.demo.model.UptakeReport;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,16 @@ public class UptakeSeviceImpl implements UptakeService {
     public void saveUser(String name, String password, String role) {
         uptakeDao.saveUser(name, password, role);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return uptakeDao.getAllUsers();
+    }
+
+    @Override
+    public void removeUserById(long id) {
+        uptakeDao.removeUserById(id);
+    }
+
 
 }

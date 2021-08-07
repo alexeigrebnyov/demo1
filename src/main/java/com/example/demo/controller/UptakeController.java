@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Analysis;
 import com.example.demo.model.Contingent;
+import com.example.demo.model.User;
 import com.example.demo.service.ContService;
 import com.example.demo.service.HIVService;
 import com.example.demo.service.UptakeService;
@@ -9,6 +10,8 @@ import com.example.demo.utils.BCScaner;
 import com.example.demo.utils.Test;
 import com.example.demo.utils.XLConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -131,6 +134,11 @@ public class UptakeController {
     }
     @GetMapping(value = "/admin")
     public String adminPage(ModelMap modelMap) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<User> users = uptakeService.getAllUsers();
+        modelMap.addAttribute("users", users);
+        modelMap.addAttribute("user", userDetails.getUsername());
+
         return "admin";
     }
     @PostMapping(value = "/saveuser")
@@ -138,6 +146,11 @@ public class UptakeController {
                            @RequestParam(value = "pass") String password,
                            @RequestParam(value = "role") String role) {
         uptakeService.saveUser(name, password, role);
+        return "redirect:/admin";
+    }
+    @PostMapping(value = "/delete")
+    public String deleteUser(@RequestParam(value = "id") Long id){
+        uptakeService.removeUserById(id);
         return "redirect:/admin";
     }
     @PostMapping(value = "/refresh")

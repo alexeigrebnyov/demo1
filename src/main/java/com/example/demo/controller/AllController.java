@@ -4,6 +4,8 @@ import com.example.demo.model.HIV;
 import com.example.demo.service.HIVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,12 @@ public class AllController {
         this.hivService = hivService;
     }
 
-    @GetMapping(value = {"/"})
+
+
+    @GetMapping(value = {"/", "/hello"})
     public String getAl(ModelMap modelMap){
-//           modelMap.addAttribute("hivs", hivService.allHivs());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        modelMap.addAttribute("user", userDetails);
             return  "hello";
     }
 

@@ -31,7 +31,7 @@ public class UptakeDaoImpl implements UptakeDao {
     EntityManager entityManager;
     PasswordEncoder passwordEncoder;
     List<User> users = new ArrayList<>();
-    Set<Role> roles =  new HashSet<>();
+
 
     @Autowired
     public void setEntityManager(EntityManager entityManager) {
@@ -268,20 +268,20 @@ public class UptakeDaoImpl implements UptakeDao {
         }
         return objects;
     }
-    public Object[] getCredentials(String s) throws SQLException {
-
-        Connection connection = database.getConnection();
-        Statement statement = connection.createStatement();
-
-        ResultSet resultSet = statement.executeQuery("select name, password_hash\n" +
-                "from sys.sql_logins\n" +
-                "where name =" +s);
-
-         return new Object[] {
-                 resultSet.getObject(1),
-                 resultSet.getObject(2)
-         };
-    }
+//    public Object[] getCredentials(String s) throws SQLException {
+//
+//        Connection connection = database.getConnection();
+//        Statement statement = connection.createStatement();
+//
+//        ResultSet resultSet = statement.executeQuery("select name, password_hash\n" +
+//                "from sys.sql_logins\n" +
+//                "where name =" +s);
+//
+//         return new Object[] {
+//                 resultSet.getObject(1),
+//                 resultSet.getObject(2)
+//         };
+//    }
     public void registerUser(User user){
 
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
@@ -290,17 +290,42 @@ public class UptakeDaoImpl implements UptakeDao {
     }
 
     @Override
+//    public User loadUserByUsername(String s) {
+//    Set<Role> roles =  new HashSet<>();
+//        roles.add(new Role("USER"));
+//        roles.add(new Role("ADMIN"));
+//        User user = new User("grebnev_a", "1072005", roles);
+//        registerUser(user);
+//
+//        users.add(user);
+//        return users
+//                .stream()
+//                .filter(n -> n.getName().equals(s)).findFirst().get();
+//    }
+
     public User loadUserByUsername(String s) {
 
-        roles.add(new Role("USER"));
-        User user = new User("grebnev_a", "1072005", roles);
-        registerUser(user);
+        User user = new User();
+        Set<Role> roles =  new HashSet<>();
+        try {
+            Connection connection = database.getConnection();
+            Statement statement = connection.createStatement();
 
-        users.add(user);
-        return users
-                .stream()
-                .filter(n -> n.getName().equals(s)).findFirst().get();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM LABOR_USERS where nameUser="+"'"+s+"'");
+            while (resultSet.next()) {
+                roles.add(new Role(resultSet.getString(4)));
+                user.setName(resultSet.getString(2));
+                user.setPassword(resultSet.getString(3));
+                user.setRoles(roles);
+            }
+
+
+
+        } catch (Exception ex) {
+            System.out.println(ex);}
+        return user;
     }
+
     @Override
     public void saveUser(String name, String password, String role) {
         User user = new User(name, password, null);
@@ -315,6 +340,41 @@ public class UptakeDaoImpl implements UptakeDao {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
+        Set<Role> roles =  new HashSet<>();
+
+        try {
+            Connection connection = database.getConnection();
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM LABOR_USERS");
+            while (resultSet.next()) {
+                roles.add(new Role(resultSet.getString(4)));
+                allUsers.add(new User(resultSet.getLong(1), resultSet.getString(2),
+                        resultSet.getString(3),roles));
+                roles.clear();
+            }
+
+
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return allUsers;
+    }
+    public void removeUserById(long id) {
+        try {
+            Connection connection = database.getConnection();
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM LABOR_USERS WHERE Id =" + id);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
     }
 
 

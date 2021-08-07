@@ -53,8 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 public void configure(HttpSecurity http) throws Exception {
     http.csrf().disable();
     http.authorizeRequests().antMatchers("/login").anonymous()
-            .antMatchers("/code").hasAuthority("USER")
-            .antMatchers("/users").hasAnyAuthority("ADMIN", "USER")
+            .antMatchers("/").hasAnyAuthority("ADMIN", "USER")
+            .antMatchers("/code").hasAnyAuthority("ADMIN", "USER")
+            .antMatchers("/chek").hasAnyAuthority("ADMIN", "USER")
+            .antMatchers("/divrefresh").hasAnyAuthority("ADMIN", "USER")
+            .antMatchers("/admin").hasAuthority("ADMIN")
             .anyRequest().authenticated().and().formLogin().successHandler(new LoginSuccessHandler());
     http.logout().permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .logoutSuccessUrl("/login").and().csrf().disable();
