@@ -14,8 +14,12 @@
     <title>Title</title>
 </head>
 <body>
-
-
+<div class="rowColor">
+    <table>
+        <tr class="contentContainer float-right"> <td th:utext="${user}"> </td></tr>
+    </table>
+    <a th:href="@{/logout}"> Выйти </a>
+</div>
 <div id="div_refresh">
     <form name="codeForm" id="codeForm" th:action="@{/code}" method="post">
         <input type="hidden" name="codeInt" id="codeInt" th:value="*{data1}">

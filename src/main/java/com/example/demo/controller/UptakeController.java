@@ -86,6 +86,7 @@ public class UptakeController {
 
     @GetMapping(value = "/divrefresh")
     public String redirect(ModelMap modelMap) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Analysis> dist = uptakeByCode
                 .stream()
                 .distinct()
@@ -93,6 +94,7 @@ public class UptakeController {
         modelMap.addAttribute("data1", code);
         modelMap.addAttribute("redir1", redirmanual);
         modelMap.addAttribute("selected1", dist);
+        modelMap.addAttribute("user", userDetails.getUsername());
 
 //        Test.data.forEach(e -> uptakeByCode.add(contService
 //                .getByCode(Integer.parseInt(e.trim()))));
@@ -108,6 +110,7 @@ public class UptakeController {
 //    }
     @GetMapping(value = "/code")
     public String updateUser1(ModelMap model)  {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     Test.getScan();
         List<Analysis> dist = uptakeByCode
@@ -118,10 +121,12 @@ public class UptakeController {
         model.addAttribute("data1", code);
         model.addAttribute("selected", dist);
         model.addAttribute("redir", redirect);
+        model.addAttribute("user", userDetails.getUsername());
         return "byCode";
     }
     @GetMapping(value = "/chek")
     public String getCheked (ModelMap model) throws SQLException {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         chekAnalysis();
         List<Analysis> dist = uptakeByCode
                 .stream()
@@ -129,6 +134,7 @@ public class UptakeController {
                 .collect(Collectors.toList());
 
         model.addAttribute("chekedAnalysis", dist);
+        model.addAttribute("user", userDetails.getUsername());
         return "chek";
 
     }
@@ -298,6 +304,7 @@ public class UptakeController {
                     try {
                         if (data1[2] != null)
                         analysis.setKontengent(data1[2].toString());
+                        else {analysis.setKontengent("");}
                     } catch (Exception ex) {
                         analysis.setKontengent("");
                     }
